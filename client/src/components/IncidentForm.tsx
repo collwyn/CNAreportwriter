@@ -546,7 +546,15 @@ export function IncidentForm({ onReportGenerated }: IncidentFormProps) {
                   <div className="text-gray-600">{t("incidentTime")}:</div>
                   <div>{form.getValues("incidentTime")}</div>
                   <div className="text-gray-600">{t("incidentNature")}:</div>
-                  <div>{form.getValues("incidentNature") && t(form.getValues("incidentNature") as any)}</div>
+                  <div>
+                    {form.getValues("incidentNature") ? 
+                      (form.getValues("incidentNature") === "fall" ? t("fall") :
+                       form.getValues("incidentNature") === "slip" ? t("slip") :
+                       form.getValues("incidentNature") === "trip" ? t("trip") :
+                       form.getValues("incidentNature") === "collapse" ? t("collapse") :
+                       form.getValues("incidentNature") === "other" ? t("other") : "") 
+                      : ""}
+                  </div>
                   <div className="text-gray-600">{t("incidentDescription")}:</div>
                   <div className="break-words">{form.getValues("incidentDescription")}</div>
                 </div>
@@ -565,8 +573,11 @@ export function IncidentForm({ onReportGenerated }: IncidentFormProps) {
                 <h4 className="font-medium text-gray-800 mb-2">{t("patientResponseSection")}</h4>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   <div className="text-gray-600">{t("patientAbleToState")}:</div>
-                  <div>{form.getValues("patientAbleToState") && t(form.getValues("patientAbleToState") as any)}</div>
-                  {patientCanRespond && (
+                  <div>
+                    {form.getValues("patientAbleToState") === "yes" ? t("yes") :
+                     form.getValues("patientAbleToState") === "no" ? t("no") : ""}
+                  </div>
+                  {form.getValues("patientAbleToState") === "yes" && (
                     <>
                       <div className="text-gray-600">{t("patientStatement")}:</div>
                       <div className="break-words">{form.getValues("patientStatement")}</div>
