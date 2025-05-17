@@ -21,11 +21,11 @@ export async function generateReport(formData: any): Promise<string> {
       messages: [
         {
           role: "system",
-          content: "You are a medical report assistant that helps CNAs (Certified Nursing Assistants) generate incident reports. Generate a formal, grammatically correct incident report based on the provided information. The report should be professional and suitable for medical documentation.",
+          content: "You are a medical report assistant that helps CNAs (Certified Nursing Assistants) generate incident reports. Generate a concise, grammatically correct incident report in a single paragraph. Write in first person from the CNA's perspective. The report should be professional and suitable for medical documentation.",
         },
         {
           role: "user",
-          content: `Please generate a formal incident report with the following information:
+          content: `Please generate a concise incident report in first person with the following information:
           
 CNA Name: ${formData.cnaName}
 Shift Time: ${formData.shiftTime}
@@ -39,14 +39,12 @@ Description of Incident: ${formData.incidentDescription}
 Was patient able to state what happened: ${formData.patientAbleToState}
 ${formData.patientAbleToState === 'yes' ? `Patient's statement: ${formData.patientStatement}` : ''}
 Actions taken by CNA: ${formData.cnaActions}
-Actions taken by nurse/supervisor: ${formData.nurseActions}
+${formData.supervisorNotified ? 'Supervisor was notified about the incident.' : 'Supervisor was not notified about the incident.'}
 
-Date of Report: ${reportDate}
-Time of Report Completion: ${reportTime}
+Current Date: ${reportDate}
+Current Time: ${reportTime}
 
-The report should be structured with sections for introduction (stating name, shift details), incident description, patient's response, actions taken, and conclusion with the current date and time as provided above. Keep it formal, accurate, and professional.
-
-Make sure to include "Date of Report: ${reportDate}" and "Time of Report Completion: ${reportTime}" in the report.`,
+Important: Structure the report as a single paragraph. Start with "My name is [CNA Name]" and include all relevant details in a clear, concise narrative. Do not use headers or separate sections. Include the current date and time naturally within the text. The tone should be professional but straightforward.`,
         },
       ],
       max_tokens: 1000,

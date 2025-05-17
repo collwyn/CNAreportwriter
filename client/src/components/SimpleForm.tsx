@@ -32,7 +32,7 @@ type FormData = {
   patientAbleToState: string;
   patientStatement?: string;
   cnaActions: string;
-  nurseActions: string;
+  supervisorNotified: string; // Changed from nurseActions to supervisorNotified
 };
 
 interface SimpleFormProps {
@@ -60,7 +60,7 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
     patientAbleToState: "",
     patientStatement: "",
     cnaActions: "",
-    nurseActions: "",
+    supervisorNotified: "",
   });
   const totalSteps = 6;
 
@@ -321,13 +321,31 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">{t("nurseActions")}</label>
-                <Textarea
-                  placeholder={t("nurseActionsPlaceholder")}
-                  rows={3}
-                  value={formState.nurseActions}
-                  onChange={(e) => handleInputChange('nurseActions', e.target.value)}
-                />
+                <label className="text-sm font-medium">Did you tell a supervisor?</label>
+                <div className="flex space-x-4 mt-1">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="supervisorNotified"
+                      value="yes"
+                      checked={formState.supervisorNotified === "yes"}
+                      onChange={() => handleInputChange('supervisorNotified', 'yes')}
+                      className="h-4 w-4"
+                    />
+                    <span>{t("yes")}</span>
+                  </label>
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name="supervisorNotified"
+                      value="no"
+                      checked={formState.supervisorNotified === "no"}
+                      onChange={() => handleInputChange('supervisorNotified', 'no')}
+                      className="h-4 w-4"
+                    />
+                    <span>{t("no")}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -447,8 +465,11 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   <div className="text-gray-600">{t("cnaActions")}:</div>
                   <div className="break-words">{formState.cnaActions}</div>
-                  <div className="text-gray-600">{t("nurseActions")}:</div>
-                  <div className="break-words">{formState.nurseActions}</div>
+                  <div className="text-gray-600">Supervisor Notified:</div>
+                  <div className="break-words">
+                    {formState.supervisorNotified === "yes" ? "Yes" : 
+                     formState.supervisorNotified === "no" ? "No" : ""}
+                  </div>
                 </div>
                 <Button 
                   variant="ghost" 
