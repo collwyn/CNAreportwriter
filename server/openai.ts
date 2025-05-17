@@ -39,7 +39,7 @@ Description of Incident: ${formData.incidentDescription}
 Was patient able to state what happened: ${formData.patientAbleToState}
 ${formData.patientAbleToState === 'yes' ? `Patient's statement: ${formData.patientStatement}` : ''}
 Actions taken by CNA: ${formData.cnaActions}
-${formData.supervisorNotified ? 'Supervisor was notified about the incident.' : 'Supervisor was not notified about the incident.'}
+${formData.supervisorNotified === 'yes' ? 'Supervisor was notified about the incident.' : 'Supervisor was not notified about the incident.'}
 
 Current Date: ${reportDate}
 Current Time: ${reportTime}

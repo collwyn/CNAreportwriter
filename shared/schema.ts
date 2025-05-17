@@ -27,7 +27,7 @@ export const reports = pgTable("reports", {
   patientAbleToState: text("patient_able_to_state").notNull(),
   patientStatement: text("patient_statement"),
   cnaActions: text("cna_actions").notNull(),
-  nurseActions: text("nurse_actions").notNull(),
+  supervisorNotified: text("supervisor_notified").notNull(),
   generatedReport: text("generated_report").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull()
 });
