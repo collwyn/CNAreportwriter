@@ -654,10 +654,18 @@ export function IncidentForm({ onReportGenerated }: IncidentFormProps) {
     );
   };
 
-  // Reset current step fields when changing steps to prevent cross-mixing data
+  // Add special handling for the form to ensure it behaves correctly
   useEffect(() => {
-    // Clear any validation errors when changing steps
+    // Just clear errors when changing steps
     form.clearErrors();
+    
+    // Ensure the form is properly registered with all fields
+    if (currentStep === 2) {
+      // Force revalidation of patient form fields
+      setTimeout(() => {
+        form.trigger(['patientName', 'patientRoom']);
+      }, 10);
+    }
   }, [currentStep, form]);
 
   return (
