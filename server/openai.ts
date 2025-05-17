@@ -8,6 +8,11 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || "" });
  */
 export async function generateReport(formData: any): Promise<string> {
   try {
+    // Get current date and time for the report
+    const now = new Date();
+    const reportDate = now.toLocaleDateString();
+    const reportTime = now.toLocaleTimeString();
+    
     // Format time for readability
     const incidentTime = formData.incidentTime;
     
@@ -36,7 +41,12 @@ ${formData.patientAbleToState === 'yes' ? `Patient's statement: ${formData.patie
 Actions taken by CNA: ${formData.cnaActions}
 Actions taken by nurse/supervisor: ${formData.nurseActions}
 
-The report should be structured with sections for introduction (stating name, shift details), incident description, patient's response, actions taken, and conclusion with current date and time. Keep it formal, accurate, and professional.`,
+Date of Report: ${reportDate}
+Time of Report Completion: ${reportTime}
+
+The report should be structured with sections for introduction (stating name, shift details), incident description, patient's response, actions taken, and conclusion with the current date and time as provided above. Keep it formal, accurate, and professional.
+
+Make sure to include "Date of Report: ${reportDate}" and "Time of Report Completion: ${reportTime}" in the report.`,
         },
       ],
       max_tokens: 1000,
