@@ -128,7 +128,10 @@ export function IncidentForm({ onReportGenerated }: IncidentFormProps) {
   const handleNext = () => {
     if (canProceedToNextStep()) {
       if (currentStep < totalSteps) {
-        setCurrentStep(prev => (prev + 1) as FormStep);
+        // Force form revalidation when changing steps to clear any cross-step field errors
+        form.trigger(getFieldsForStep(currentStep) as any).then(() => {
+          setCurrentStep(prev => (prev + 1) as FormStep);
+        });
       }
     } else {
       toast({
@@ -650,6 +653,12 @@ export function IncidentForm({ onReportGenerated }: IncidentFormProps) {
       </div>
     );
   };
+
+  // Reset current step fields when changing steps to prevent cross-mixing data
+  useEffect(() => {
+    // Clear any validation errors when changing steps
+    form.clearErrors();
+  }, [currentStep, form]);
 
   return (
     <Card className="mb-6">
