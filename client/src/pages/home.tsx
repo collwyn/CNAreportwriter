@@ -4,7 +4,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { SimpleForm } from "@/components/SimpleForm";
 import { GeneratedReport } from "@/components/GeneratedReport";
 import { RateLimitDisplay } from "@/components/RateLimitDisplay";
-import { CostMonitor } from "@/components/CostMonitor";
+import { RateLimitAlert } from "@/components/RateLimitAlert";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -34,9 +34,9 @@ export default function Home() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="space-y-4 mb-6">
+          <RateLimitAlert />
           <RateLimitDisplay />
-          <CostMonitor />
         </div>
         
         <SimpleForm onReportGenerated={handleReportGenerated} />

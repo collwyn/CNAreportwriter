@@ -104,29 +104,7 @@ export function RateLimitDisplay() {
           </div>
         </div>
         
-        {rateLimit.remaining === 0 && (
-          <div className="mt-3 p-3 bg-red-100 border border-red-200 rounded-md">
-            <div className="flex items-start space-x-2">
-              <AlertCircle className="h-4 w-4 text-red-600 mt-0.5" />
-              <div className="text-sm text-red-700">
-                <p className="font-medium">Daily limit reached</p>
-                <p>You've used all {rateLimit.limit} report generations for today. Your limit will reset {formatResetTime(rateLimit.resetTime).toLowerCase()}.</p>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {rateLimit.remaining === 1 && (
-          <div className="mt-3 p-3 bg-yellow-100 border border-yellow-200 rounded-md">
-            <div className="flex items-start space-x-2">
-              <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
-              <div className="text-sm text-yellow-700">
-                <p className="font-medium">Last generation remaining</p>
-                <p>You have 1 report generation left for today. Use it wisely!</p>
-              </div>
-            </div>
-          </div>
-        )}
+
       </CardContent>
     </Card>
   );

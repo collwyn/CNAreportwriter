@@ -99,9 +99,10 @@ This is a multi-language CNA (Certified Nursing Assistant) incident report appli
 - January 02, 2025: Added IP-based rate limiting system
   - Implemented 5 reports per day limit per IP address
   - Added real-time usage tracking and display
-  - Created cost monitoring with $10 daily budget visualization
   - Enhanced error handling for rate limit violations
   - Added remaining generations counter in UI
+  - Alert system shows when daily limit is hit with reset time
+  - Removed public budget visibility for privacy
 
 ## Changelog
 - July 06, 2025. Initial setup
