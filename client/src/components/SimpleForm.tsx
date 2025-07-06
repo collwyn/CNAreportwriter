@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLanguage } from "@/context/LanguageContext";
 import { generateReport } from "@/lib/openai";
 import { useToast } from "@/hooks/use-toast";
+import { useRateLimit } from "@/hooks/useRateLimit";
 
 import {
   Card,
@@ -45,6 +46,8 @@ type FormStep = 1 | 2 | 3 | 4 | 5 | 6;
 export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { data: rateLimit } = useRateLimit();
   const [currentStep, setCurrentStep] = useState<FormStep>(1);
   const [patientCanRespond, setPatientCanRespond] = useState<boolean | null>(null);
   const [formState, setFormState] = useState<FormData>({
@@ -68,13 +71,28 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
     mutationFn: generateReport,
     onSuccess: (data) => {
       onReportGenerated(data.report.generatedReport);
-    },
-    onError: () => {
+      // Refresh rate limit status after successful generation
+      queryClient.invalidateQueries({ queryKey: ['rateLimit'] });
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to generate report. Please try again.",
+        title: "Report Generated Successfully",
+        description: "Your incident report has been created.",
       });
+    },
+    onError: (error: any) => {
+      // Handle rate limit errors specifically
+      if (error?.status === 429) {
+        toast({
+          variant: "destructive",
+          title: "Daily Limit Reached",
+          description: error?.message || "You have reached your daily limit of 5 report generations. Please try again tomorrow.",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to generate report. Please try again.",
+        });
+      }
     },
   });
 
@@ -547,9 +565,15 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
           <Button 
             type="button" 
             onClick={handleSubmit}
-            disabled={generateReportMutation.isPending}
+            disabled={generateReportMutation.isPending || (rateLimit?.remaining === 0)}
+            className={rateLimit?.remaining === 0 ? "bg-gray-400 cursor-not-allowed" : ""}
           >
-            {generateReportMutation.isPending ? t("loading") : t("generateReport")}
+            {generateReportMutation.isPending 
+              ? t("loading") 
+              : rateLimit?.remaining === 0 
+                ? "Daily Limit Reached" 
+                : t("generateReport")
+            }
           </Button>
         ) : (
           <Button 

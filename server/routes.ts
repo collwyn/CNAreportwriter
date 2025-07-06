@@ -3,10 +3,17 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateReport, translateReport } from "./openai";
 import { insertReportSchema, translateReportSchema } from "@shared/schema";
+import { reportRateLimit } from "./rateLimit";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Generate report endpoint
-  app.post("/api/report/generate", async (req, res) => {
+  // Rate limit status endpoint
+  app.get("/api/rate-limit/status", (req, res) => {
+    const status = reportRateLimit.getRemainingRequests(req);
+    res.json(status);
+  });
+
+  // Generate report endpoint with rate limiting
+  app.post("/api/report/generate", reportRateLimit.middleware, async (req, res) => {
     try {
       // Validate request body
       const validationResult = insertReportSchema.safeParse(req.body);

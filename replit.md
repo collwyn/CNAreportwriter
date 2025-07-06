@@ -95,6 +95,14 @@ This is a multi-language CNA (Certified Nursing Assistant) incident report appli
 - Version-controlled migration files
 - Safe deployment with rollback capabilities
 
+## Recent Changes
+- January 02, 2025: Added IP-based rate limiting system
+  - Implemented 5 reports per day limit per IP address
+  - Added real-time usage tracking and display
+  - Created cost monitoring with $10 daily budget visualization
+  - Enhanced error handling for rate limit violations
+  - Added remaining generations counter in UI
+
 ## Changelog
 - July 06, 2025. Initial setup
 
