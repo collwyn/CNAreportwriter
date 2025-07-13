@@ -6,6 +6,15 @@ import { insertReportSchema, translateReportSchema, insertFeedbackSchema, insert
 import { reportRateLimit } from "./rateLimit";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Debug route to check server routing
+  app.get("/api/debug/routes", (req, res) => {
+    res.json({ 
+      message: "Server routes working", 
+      timestamp: new Date().toISOString(),
+      env: process.env.NODE_ENV || 'development'
+    });
+  });
+
   // Rate limit status endpoint
   app.get("/api/rate-limit/status", (req, res) => {
     const status = reportRateLimit.getRemainingRequests(req);
