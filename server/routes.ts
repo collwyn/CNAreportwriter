@@ -121,7 +121,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Simple admin authentication middleware
   const adminAuth = (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
-    if (authHeader === 'Bearer admin123') {
+    // Support both Bearer token and simple password formats
+    if (authHeader === 'Bearer admin123' || authHeader === 'admin123') {
       next();
     } else {
       res.status(401).json({ message: 'Unauthorized' });

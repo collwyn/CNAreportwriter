@@ -45,18 +45,45 @@ export default function FeedbackDashboard() {
     queryKey: ['/api/admin/feedback'],
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    queryFn: async () => {
+      const res = await fetch('/api/admin/feedback', {
+        headers: {
+          'Authorization': 'Bearer admin123'
+        }
+      });
+      if (!res.ok) throw new Error('Failed to fetch feedback data');
+      return res.json();
+    }
   });
 
   const { data: feedbackStats } = useQuery({
     queryKey: ['/api/admin/feedback/stats'],
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000,
+    queryFn: async () => {
+      const res = await fetch('/api/admin/feedback/stats', {
+        headers: {
+          'Authorization': 'Bearer admin123'
+        }
+      });
+      if (!res.ok) throw new Error('Failed to fetch feedback stats');
+      return res.json();
+    }
   });
 
   const { data: feedbackAnalytics } = useQuery({
     queryKey: ['/api/admin/feedback/analytics'],
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000,
+    queryFn: async () => {
+      const res = await fetch('/api/admin/feedback/analytics', {
+        headers: {
+          'Authorization': 'Bearer admin123'
+        }
+      });
+      if (!res.ok) throw new Error('Failed to fetch analytics data');
+      return res.json();
+    }
   });
 
   const handleAuth = () => {
