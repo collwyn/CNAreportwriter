@@ -43,9 +43,31 @@ export const translateReportSchema = z.object({
   targetLanguage: z.string()
 });
 
+// Feedback table
+export const feedback = pgTable("feedback", {
+  id: serial("id").primaryKey(),
+  usefulness: integer("usefulness").notNull(),
+  easeOfUse: integer("ease_of_use").notNull(),
+  overallSatisfaction: integer("overall_satisfaction").notNull(),
+  mostHelpfulFeature: text("most_helpful_feature").notNull(),
+  suggestedImprovements: text("suggested_improvements").notNull(),
+  additionalComments: text("additional_comments"),
+  ipAddress: text("ip_address").notNull(),
+  submittedAt: timestamp("submitted_at").defaultNow().notNull(),
+});
+
+export const insertFeedbackSchema = createInsertSchema(feedback).omit({
+  id: true,
+  ipAddress: true,
+  submittedAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
 export type InsertReport = z.infer<typeof insertReportSchema>;
 export type Report = typeof reports.$inferSelect;
 export type TranslateRequest = z.infer<typeof translateReportSchema>;
+
+export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
+export type Feedback = typeof feedback.$inferSelect;

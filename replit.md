@@ -96,6 +96,14 @@ This is a multi-language CNA (Certified Nursing Assistant) incident report appli
 - Safe deployment with rollback capabilities
 
 ## Recent Changes
+- January 13, 2025: Added comprehensive feedback collection system
+  - Multi-question feedback form with 5-star ratings for usefulness, ease of use, and satisfaction
+  - Text fields for most helpful features and suggested improvements
+  - Optional additional comments section
+  - Backend storage of feedback data with IP tracking for analytics
+  - Thank you confirmation message after submission
+  - Database schema updated to include feedback table
+
 - January 02, 2025: Added IP-based rate limiting system
   - Implemented 5 reports per day limit per IP address
   - Added real-time usage tracking and display

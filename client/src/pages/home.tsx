@@ -5,6 +5,7 @@ import { SimpleForm } from "@/components/SimpleForm";
 import { GeneratedReport } from "@/components/GeneratedReport";
 import { RateLimitDisplay } from "@/components/RateLimitDisplay";
 import { RateLimitAlert } from "@/components/RateLimitAlert";
+import { FeedbackForm } from "@/components/FeedbackForm";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -44,6 +45,11 @@ export default function Home() {
         {generatedReport && (
           <GeneratedReport report={generatedReport} />
         )}
+        
+        {/* Feedback Section */}
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <FeedbackForm />
+        </div>
       </main>
 
       <Footer />

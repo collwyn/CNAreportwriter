@@ -1,4 +1,4 @@
-import { users, reports, type User, type InsertUser, type Report, type InsertReport } from "@shared/schema";
+import { users, reports, feedback, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
@@ -7,6 +7,9 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   createReport(report: InsertReport & { generatedReport: string }): Promise<Report>;
+  createFeedback(feedback: InsertFeedback, ipAddress: string): Promise<Feedback>;
+  getAllFeedback(): Promise<Feedback[]>;
+  getFeedbackStats(): Promise<any>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -44,20 +47,97 @@ export class DatabaseStorage implements IStorage {
     
     return report;
   }
+
+  async createFeedback(feedbackData: InsertFeedback, ipAddress: string): Promise<Feedback> {
+    const [feedbackRecord] = await db
+      .insert(feedback)
+      .values({
+        ...feedbackData,
+        ipAddress
+      })
+      .returning();
+    
+    return feedbackRecord;
+  }
+
+  async getAllFeedback(): Promise<Feedback[]> {
+    return await db.select().from(feedback).orderBy(feedback.submittedAt);
+  }
+
+  async getFeedbackStats(): Promise<any> {
+    const allFeedback = await this.getAllFeedback();
+    
+    if (allFeedback.length === 0) {
+      return {
+        totalResponses: 0,
+        averageUsefulness: 0,
+        averageEaseOfUse: 0,
+        averageSatisfaction: 0,
+        ratingDistribution: [],
+        topFeatures: [],
+        commonSuggestions: []
+      };
+    }
+
+    const totalResponses = allFeedback.length;
+    const averageUsefulness = allFeedback.reduce((sum, f) => sum + f.usefulness, 0) / totalResponses;
+    const averageEaseOfUse = allFeedback.reduce((sum, f) => sum + f.easeOfUse, 0) / totalResponses;
+    const averageSatisfaction = allFeedback.reduce((sum, f) => sum + f.overallSatisfaction, 0) / totalResponses;
+
+    // Rating distribution based on overall satisfaction
+    const ratingCounts = [1, 2, 3, 4, 5].map(rating => ({
+      rating,
+      count: allFeedback.filter(f => f.overallSatisfaction === rating).length
+    }));
+
+    // Simple text analysis for top features and suggestions
+    const featureWords = allFeedback.flatMap(f => 
+      f.mostHelpfulFeature.toLowerCase().split(/\s+/).filter(word => word.length > 3)
+    );
+    const suggestionWords = allFeedback.flatMap(f => 
+      f.suggestedImprovements.toLowerCase().split(/\s+/).filter(word => word.length > 3)
+    );
+
+    const getTopTerms = (words: string[], limit = 5) => {
+      const counts = words.reduce((acc, word) => {
+        acc[word] = (acc[word] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+      
+      return Object.entries(counts)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, limit)
+        .map(([feature, count]) => ({ feature, count }));
+    };
+
+    return {
+      totalResponses,
+      averageUsefulness: Math.round(averageUsefulness * 10) / 10,
+      averageEaseOfUse: Math.round(averageEaseOfUse * 10) / 10,
+      averageSatisfaction: Math.round(averageSatisfaction * 10) / 10,
+      ratingDistribution: ratingCounts,
+      topFeatures: getTopTerms(featureWords),
+      commonSuggestions: getTopTerms(suggestionWords)
+    };
+  }
 }
 
 // For backward compatibility, we'll temporarily keep MemStorage
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private reports: Map<number, Report>;
+  private feedbacks: Map<number, Feedback>;
   private userCurrentId: number;
   private reportCurrentId: number;
+  private feedbackCurrentId: number;
 
   constructor() {
     this.users = new Map();
     this.reports = new Map();
+    this.feedbacks = new Map();
     this.userCurrentId = 1;
     this.reportCurrentId = 1;
+    this.feedbackCurrentId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -94,6 +174,63 @@ export class MemStorage implements IStorage {
     };
     this.reports.set(id, report);
     return report;
+  }
+
+  async createFeedback(feedbackData: InsertFeedback, ipAddress: string): Promise<Feedback> {
+    const id = this.feedbackCurrentId++;
+    const now = new Date();
+    
+    const feedbackRecord: Feedback = {
+      ...feedbackData,
+      id,
+      ipAddress,
+      submittedAt: now
+    };
+    this.feedbacks.set(id, feedbackRecord);
+    return feedbackRecord;
+  }
+
+  async getAllFeedback(): Promise<Feedback[]> {
+    return Array.from(this.feedbacks.values()).sort((a, b) => 
+      a.submittedAt.getTime() - b.submittedAt.getTime()
+    );
+  }
+
+  async getFeedbackStats(): Promise<any> {
+    const allFeedback = await this.getAllFeedback();
+    
+    if (allFeedback.length === 0) {
+      return {
+        totalResponses: 0,
+        averageUsefulness: 0,
+        averageEaseOfUse: 0,
+        averageSatisfaction: 0,
+        ratingDistribution: [],
+        topFeatures: [],
+        commonSuggestions: []
+      };
+    }
+
+    const totalResponses = allFeedback.length;
+    const averageUsefulness = allFeedback.reduce((sum, f) => sum + f.usefulness, 0) / totalResponses;
+    const averageEaseOfUse = allFeedback.reduce((sum, f) => sum + f.easeOfUse, 0) / totalResponses;
+    const averageSatisfaction = allFeedback.reduce((sum, f) => sum + f.overallSatisfaction, 0) / totalResponses;
+
+    // Rating distribution based on overall satisfaction
+    const ratingCounts = [1, 2, 3, 4, 5].map(rating => ({
+      rating,
+      count: allFeedback.filter(f => f.overallSatisfaction === rating).length
+    }));
+
+    return {
+      totalResponses,
+      averageUsefulness: Math.round(averageUsefulness * 10) / 10,
+      averageEaseOfUse: Math.round(averageEaseOfUse * 10) / 10,
+      averageSatisfaction: Math.round(averageSatisfaction * 10) / 10,
+      ratingDistribution: ratingCounts,
+      topFeatures: [],
+      commonSuggestions: []
+    };
   }
 }
 

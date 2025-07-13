@@ -6,11 +6,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
+import FeedbackDashboard from "@/pages/feedback-dashboard";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/admin/feedback" component={FeedbackDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
