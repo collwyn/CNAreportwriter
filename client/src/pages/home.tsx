@@ -43,13 +43,15 @@ export default function Home() {
         <SimpleForm onReportGenerated={handleReportGenerated} />
         
         {generatedReport && (
-          <GeneratedReport report={generatedReport} />
+          <>
+            <GeneratedReport report={generatedReport} />
+            
+            {/* Feedback Section - Only show after successful report generation */}
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <FeedbackForm />
+            </div>
+          </>
         )}
-        
-        {/* Feedback Section */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <FeedbackForm />
-        </div>
       </main>
 
       <Footer />

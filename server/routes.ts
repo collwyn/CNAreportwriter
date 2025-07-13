@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateReport, translateReport } from "./openai";
-import { insertReportSchema, translateReportSchema, insertFeedbackSchema } from "@shared/schema";
+import { insertReportSchema, translateReportSchema, insertFeedbackSchema, insertFeedbackAnalyticsSchema } from "@shared/schema";
 import { reportRateLimit } from "./rateLimit";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -137,6 +137,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching feedback stats:", error);
       res.status(500).json({ message: "Error fetching feedback statistics" });
+    }
+  });
+
+  app.get("/api/admin/feedback/analytics", adminAuth, async (req, res) => {
+    try {
+      const analytics = await storage.getFeedbackAnalytics();
+      res.json(analytics);
+    } catch (error) {
+      console.error("Error fetching feedback analytics:", error);
+      res.status(500).json({ message: "Error fetching feedback analytics" });
+    }
+  });
+
+  // Track feedback form interactions
+  app.post("/api/feedback/track", async (req, res) => {
+    try {
+      const validationResult = insertFeedbackAnalyticsSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid analytics data", 
+          errors: validationResult.error.format() 
+        });
+      }
+      
+      const analyticsData = validationResult.data;
+      
+      // Get client info
+      const clientIP = req.ip || 
+                      req.connection.remoteAddress || 
+                      req.headers['x-forwarded-for'] as string || 
+                      'unknown';
+      const userAgent = req.headers['user-agent'] || 'unknown';
+      
+      // Store analytics
+      await storage.trackFeedbackAnalytics({
+        ...analyticsData,
+        ipAddress: clientIP,
+        userAgent
+      });
+      
+      res.status(200).json({ message: "Analytics tracked successfully" });
+    } catch (error) {
+      console.error("Error tracking analytics:", error);
+      res.status(500).json({ message: "Error tracking analytics" });
     }
   });
 

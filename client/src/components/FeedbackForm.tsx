@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -38,9 +38,32 @@ const ratingLabels = {
   '5': 'Excellent'
 };
 
+// Function to track analytics events
+const trackAnalytics = async (eventType: 'view' | 'submit') => {
+  try {
+    await fetch('/api/feedback/track', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventType,
+        formType: 'feedback'
+      }),
+    });
+  } catch (error) {
+    console.error('Error tracking analytics:', error);
+  }
+};
+
 export function FeedbackForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+
+  // Track when the feedback form is viewed
+  useEffect(() => {
+    trackAnalytics('view');
+  }, []);
 
   const form = useForm<FeedbackData>({
     resolver: zodResolver(feedbackSchema),
@@ -76,6 +99,8 @@ export function FeedbackForm() {
   });
 
   const onSubmit = (data: FeedbackData) => {
+    // Track submission attempt
+    trackAnalytics('submit');
     submitFeedbackMutation.mutate(data);
   };
 

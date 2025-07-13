@@ -62,6 +62,20 @@ export const insertFeedbackSchema = createInsertSchema(feedback).omit({
   submittedAt: true,
 });
 
+// Analytics table for tracking feedback form interactions
+export const feedbackAnalytics = pgTable("feedback_analytics", {
+  id: serial("id").primaryKey(),
+  eventType: text("event_type").notNull(), // 'view' or 'submit'
+  ipAddress: text("ip_address").notNull(),
+  userAgent: text("user_agent"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const insertFeedbackAnalyticsSchema = createInsertSchema(feedbackAnalytics).omit({
+  id: true,
+  timestamp: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -71,3 +85,5 @@ export type TranslateRequest = z.infer<typeof translateReportSchema>;
 
 export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
 export type Feedback = typeof feedback.$inferSelect;
+export type InsertFeedbackAnalytics = z.infer<typeof insertFeedbackAnalyticsSchema>;
+export type FeedbackAnalytics = typeof feedbackAnalytics.$inferSelect;

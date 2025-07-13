@@ -1,4 +1,4 @@
-import { users, reports, feedback, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback } from "@shared/schema";
+import { users, reports, feedback, feedbackAnalytics, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback, type FeedbackAnalytics, type InsertFeedbackAnalytics } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 
@@ -10,6 +10,8 @@ export interface IStorage {
   createFeedback(feedback: InsertFeedback, ipAddress: string): Promise<Feedback>;
   getAllFeedback(): Promise<Feedback[]>;
   getFeedbackStats(): Promise<any>;
+  trackFeedbackAnalytics(analytics: InsertFeedbackAnalytics): Promise<FeedbackAnalytics>;
+  getFeedbackAnalytics(): Promise<any>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -120,6 +122,41 @@ export class DatabaseStorage implements IStorage {
       commonSuggestions: getTopTerms(suggestionWords)
     };
   }
+
+  async trackFeedbackAnalytics(analyticsData: InsertFeedbackAnalytics): Promise<FeedbackAnalytics> {
+    const [analytics] = await db
+      .insert(feedbackAnalytics)
+      .values(analyticsData)
+      .returning();
+    
+    return analytics;
+  }
+
+  async getFeedbackAnalytics(): Promise<any> {
+    const analytics = await db.select().from(feedbackAnalytics).orderBy(feedbackAnalytics.timestamp);
+    
+    const totalViews = analytics.filter(a => a.eventType === 'view').length;
+    const totalSubmissions = analytics.filter(a => a.eventType === 'submit').length;
+    const conversionRate = totalViews > 0 ? (totalSubmissions / totalViews) * 100 : 0;
+    
+    // Recent analytics (last 7 days)
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    
+    const recentAnalytics = analytics.filter(a => a.timestamp >= sevenDaysAgo);
+    const recentViews = recentAnalytics.filter(a => a.eventType === 'view').length;
+    const recentSubmissions = recentAnalytics.filter(a => a.eventType === 'submit').length;
+    const recentConversionRate = recentViews > 0 ? (recentSubmissions / recentViews) * 100 : 0;
+
+    return {
+      totalViews,
+      totalSubmissions,
+      conversionRate: Math.round(conversionRate * 10) / 10,
+      recentViews,
+      recentSubmissions,
+      recentConversionRate: Math.round(recentConversionRate * 10) / 10
+    };
+  }
 }
 
 // For backward compatibility, we'll temporarily keep MemStorage
@@ -127,17 +164,21 @@ export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private reports: Map<number, Report>;
   private feedbacks: Map<number, Feedback>;
+  private analytics: Map<number, FeedbackAnalytics>;
   private userCurrentId: number;
   private reportCurrentId: number;
   private feedbackCurrentId: number;
+  private analyticsCurrentId: number;
 
   constructor() {
     this.users = new Map();
     this.reports = new Map();
     this.feedbacks = new Map();
+    this.analytics = new Map();
     this.userCurrentId = 1;
     this.reportCurrentId = 1;
     this.feedbackCurrentId = 1;
+    this.analyticsCurrentId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -230,6 +271,36 @@ export class MemStorage implements IStorage {
       ratingDistribution: ratingCounts,
       topFeatures: [],
       commonSuggestions: []
+    };
+  }
+
+  async trackFeedbackAnalytics(analyticsData: InsertFeedbackAnalytics): Promise<FeedbackAnalytics> {
+    const id = this.analyticsCurrentId++;
+    const now = new Date();
+    
+    const analytics: FeedbackAnalytics = {
+      ...analyticsData,
+      id,
+      timestamp: now
+    };
+    this.analytics.set(id, analytics);
+    return analytics;
+  }
+
+  async getFeedbackAnalytics(): Promise<any> {
+    const analytics = Array.from(this.analytics.values());
+    
+    const totalViews = analytics.filter(a => a.eventType === 'view').length;
+    const totalSubmissions = analytics.filter(a => a.eventType === 'submit').length;
+    const conversionRate = totalViews > 0 ? (totalSubmissions / totalViews) * 100 : 0;
+
+    return {
+      totalViews,
+      totalSubmissions,
+      conversionRate: Math.round(conversionRate * 10) / 10,
+      recentViews: totalViews,
+      recentSubmissions: totalSubmissions,
+      recentConversionRate: Math.round(conversionRate * 10) / 10
     };
   }
 }

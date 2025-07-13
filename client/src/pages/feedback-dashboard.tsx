@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Download, Star, MessageSquare, TrendingUp, Users } from 'lucide-react';
+import { Download, Star, MessageSquare, TrendingUp, Users, Eye, Send, Target } from 'lucide-react';
 
 interface FeedbackData {
   id: number;
@@ -28,6 +28,15 @@ interface FeedbackStats {
   commonSuggestions: Array<{ suggestion: string; count: number }>;
 }
 
+interface FeedbackAnalytics {
+  totalViews: number;
+  totalSubmissions: number;
+  conversionRate: number;
+  recentViews: number;
+  recentSubmissions: number;
+  recentConversionRate: number;
+}
+
 export default function FeedbackDashboard() {
   const [authKey, setAuthKey] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,6 +49,12 @@ export default function FeedbackDashboard() {
 
   const { data: feedbackStats } = useQuery({
     queryKey: ['/api/admin/feedback/stats'],
+    enabled: isAuthenticated,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: feedbackAnalytics } = useQuery({
+    queryKey: ['/api/admin/feedback/analytics'],
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000,
   });
@@ -146,8 +161,58 @@ export default function FeedbackDashboard() {
       </header>
 
       <main className="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        {/* Analytics Section */}
+        {feedbackAnalytics && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Form Analytics</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <Eye className="h-8 w-8 text-blue-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Views</p>
+                      <p className="text-2xl font-bold text-gray-900">{feedbackAnalytics.totalViews}</p>
+                      <p className="text-xs text-gray-500">Last 7 days: {feedbackAnalytics.recentViews}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <Send className="h-8 w-8 text-green-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Submissions</p>
+                      <p className="text-2xl font-bold text-gray-900">{feedbackAnalytics.totalSubmissions}</p>
+                      <p className="text-xs text-gray-500">Last 7 days: {feedbackAnalytics.recentSubmissions}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <Target className="h-8 w-8 text-purple-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Conversion Rate</p>
+                      <p className="text-2xl font-bold text-gray-900">{feedbackAnalytics.conversionRate}%</p>
+                      <p className="text-xs text-gray-500">Last 7 days: {feedbackAnalytics.recentConversionRate}%</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* Feedback Statistics */}
         {feedbackStats && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Feedback Statistics</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center">
@@ -195,6 +260,7 @@ export default function FeedbackDashboard() {
                 </div>
               </CardContent>
             </Card>
+            </div>
           </div>
         )}
 
