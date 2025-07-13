@@ -66,6 +66,7 @@ export const insertFeedbackSchema = createInsertSchema(feedback).omit({
 export const feedbackAnalytics = pgTable("feedback_analytics", {
   id: serial("id").primaryKey(),
   eventType: text("event_type").notNull(), // 'view' or 'submit'
+  formType: text("form_type").notNull(), // 'feedback'
   ipAddress: text("ip_address").notNull(),
   userAgent: text("user_agent"),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
@@ -73,6 +74,8 @@ export const feedbackAnalytics = pgTable("feedback_analytics", {
 
 export const insertFeedbackAnalyticsSchema = createInsertSchema(feedbackAnalytics).omit({
   id: true,
+  ipAddress: true,
+  userAgent: true,
   timestamp: true,
 });
 
