@@ -12,7 +12,7 @@ class RateLimiter {
   private readonly maxRequests: number;
   private readonly windowMs: number;
 
-  constructor(maxRequests: number = 5, windowMs: number = 24 * 60 * 60 * 1000) { // 24 hours
+  constructor(maxRequests: number = 3, windowMs: number = 24 * 60 * 60 * 1000) { // 24 hours
     this.maxRequests = maxRequests;
     this.windowMs = windowMs;
   }
@@ -96,5 +96,5 @@ class RateLimiter {
   }
 }
 
-// Create rate limiter instance - 5 requests per 24 hours
-export const reportRateLimit = new RateLimiter(5, 24 * 60 * 60 * 1000);
+// Create rate limiter instance - 3 requests per 24 hours
+export const reportRateLimit = new RateLimiter(3, 24 * 60 * 60 * 1000);
