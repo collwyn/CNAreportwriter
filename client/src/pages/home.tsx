@@ -7,10 +7,13 @@ import { RateLimitDisplay } from "@/components/RateLimitDisplay";
 import { RateLimitAlert } from "@/components/RateLimitAlert";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { Footer } from "@/components/Footer";
+import { NurseLogo } from "@/components/NurseLogo";
+import { useRateLimit } from "@/hooks/useRateLimit";
 
 export default function Home() {
   const { t } = useLanguage();
   const [generatedReport, setGeneratedReport] = useState<string | null>(null);
+  const { data: rateLimitData } = useRateLimit();
 
   const handleReportGenerated = (report: string) => {
     setGeneratedReport(report);
@@ -41,12 +44,55 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow">
-        <div className="space-y-4 mb-6">
+      <main className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8 flex-grow">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <NurseLogo />
+          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+            CNA Incident Report Generator
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+            This tool walks you through each step of creating a professional incident report. Just answer 
+            the questions, and we'll generate a properly formatted report you can use at work.
+          </p>
+          <p className="text-base text-gray-500 max-w-xl mx-auto mb-8">
+            Built by a developer to help a CNA friend – now helping healthcare workers everywhere 
+            document incidents quickly and accurately.
+          </p>
+        </div>
+
+        {/* Daily Report Generations Card */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div>
+              <div className="font-medium text-gray-900">Daily Report Generations</div>
+              <div className="text-sm text-gray-600">
+                {rateLimitData?.used || 0} of {rateLimitData?.limit || 5} used • Resets in 24 hours
+              </div>
+            </div>
+            <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+              {rateLimitData?.remaining || 5} remaining
+            </div>
+          </div>
+          <div className="text-2xl font-bold text-gray-900">
+            {rateLimitData?.remaining || 5}
+          </div>
+          <div className="text-sm text-gray-500 font-medium">
+            LEFT TODAY
+          </div>
+        </div>
+
+        {/* Rate Limit Alert */}
+        <div className="mb-6">
           <RateLimitAlert />
-          <RateLimitDisplay />
         </div>
         
+        {/* Form Section */}
         <SimpleForm onReportGenerated={handleReportGenerated} />
         
         {generatedReport && (
