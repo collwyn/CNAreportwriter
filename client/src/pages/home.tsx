@@ -9,6 +9,7 @@ import { FeedbackForm } from "@/components/FeedbackForm";
 import { Footer } from "@/components/Footer";
 import { NurseLogo } from "@/components/NurseLogo";
 import { useRateLimit } from "@/hooks/useRateLimit";
+import headerLogoImage from "@assets/cnageniuslogo_1752779536382.jpg";
 
 export default function Home() {
   const { t } = useLanguage();
@@ -29,9 +30,16 @@ export default function Home() {
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-semibold text-gray-800">
-              CNA Genius
-            </h1>
+            <div className="flex items-center space-x-3">
+              <img 
+                src={headerLogoImage} 
+                alt="CNA Genius Logo" 
+                className="h-8 w-8 rounded-md object-cover"
+              />
+              <h1 className="text-xl font-semibold text-gray-800">
+                CNA Genius
+              </h1>
+            </div>
             <a 
               href="/admin/feedback" 
               className="text-xs text-gray-500 hover:text-gray-700 underline"
