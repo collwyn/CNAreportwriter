@@ -1,5 +1,5 @@
 // Language translation resources for the application
-export type SupportedLanguage = 'en' | 'es' | 'fr' | 'zh' | 'ht' | 'tl';
+export type SupportedLanguage = 'en' | 'es' | 'fr' | 'zh' | 'ht' | 'tl' | 'ko';
 
 export const LANGUAGES = {
   en: {
@@ -25,6 +25,10 @@ export const LANGUAGES = {
   tl: {
     name: "Tagalog",
     native: "Tagalog"
+  },
+  ko: {
+    name: "Korean",
+    native: "한국어"
   }
 };
 
@@ -382,5 +386,89 @@ export const translations = {
     loading: 'Naglo-load...',
     copyReport: 'Kopyahin sa clipboard',
     translating: 'Isinasalin...'
+  },
+  ko: {
+    appTitle: 'CNA 사고 보고서 생성기',
+    introTitle: '사고 보고서 양식',
+    introText: '문법적으로 올바른 사고 보고서를 생성하려면 아래의 모든 필드를 작성하십시오. 모든 필드는 필수입니다.',
+    
+    // Navigation
+    next: '다음',
+    previous: '이전',
+    
+    // Form progress
+    formStep1: 'CNA 정보',
+    formStep2: '환자 정보',
+    formStep3: '사고 세부사항',
+    formStep4: '환자 반응',
+    formStep5: '취한 조치',
+    formStep6: '보고서 생성',
+    
+    cnaInfoSection: 'CNA 정보',
+    cnaInfoText: '귀하의 정보와 근무 세부사항을 입력해 주십시오.',
+    cnaName: 'CNA 이름',
+    cnaNamePlaceholder: '성명을 입력하세요',
+    shiftTime: '근무 시간',
+    morning: '아침',
+    day: '낮',
+    evening: '저녁',
+    night: '밤',
+    floor: '근무 층',
+    floorPlaceholder: '층 번호 또는 이름을 입력하세요',
+    supervisorOnDuty: '당직 감독자',
+    supervisorPlaceholder: '감독자 이름을 입력하세요',
+    
+    patientInfoSection: '환자 정보',
+    patientInfoText: '사고에 관련된 환자의 세부사항을 입력하세요.',
+    patientName: '환자 이름',
+    patientNamePlaceholder: '환자의 성명을 입력하세요',
+    patientRoom: '환자 병실',
+    roomPlaceholder: '병실 번호를 입력하세요',
+    
+    incidentInfoSection: '사고 정보',
+    incidentInfoText: '사고가 언제, 어떻게 발생했는지에 대한 세부사항을 제공하세요.',
+    incidentTime: '사고 시간',
+    incidentNature: '사고 성격',
+    fall: '낙상',
+    slip: '미끄러짐',
+    trip: '걸려 넘어짐',
+    collapse: '쓰러짐',
+    other: '기타',
+    incidentDescription: '사고 설명',
+    descriptionPlaceholder: '무슨 일이 일어났는지 자세히 설명하세요',
+    
+    patientResponseSection: '환자 반응',
+    patientResponseText: '환자가 사고에 어떻게 반응했는지 기록하세요.',
+    patientAbleToState: '환자가 무슨 일이 일어났는지 말할 수 있었습니까?',
+    yes: '예',
+    no: '아니오',
+    patientStatement: '환자가 무엇이라고 말했습니까?',
+    statementPlaceholder: '환자의 진술을 입력하세요',
+    
+    actionsTakenSection: '취한 조치',
+    actionsTakenText: '사고 발생 후 취한 조치를 설명하세요.',
+    cnaActions: 'CNA가 취한 조치',
+    cnaActionsPlaceholder: '귀하가 취한 조치를 설명하세요',
+    nurseActions: '간호사/감독자가 취한 조치',
+    nurseActionsPlaceholder: '간호사나 감독자가 취한 조치를 설명하세요',
+    
+    reviewSection: '검토 및 생성',
+    reviewText: '보고서를 생성하기 전에 정보를 검토하세요.',
+    generateReport: '보고서 생성',
+    generatedReport: '생성된 보고서',
+    reportDisclaimer: '이 보고서는 귀하의 입력을 바탕으로 자동 생성되었습니다. 제출하기 전에 정확성을 검토해 주십시오.',
+    
+    print: '인쇄',
+    selectOption: '옵션 선택',
+    footerText: '모든 권리 보유.',
+    copySuccess: '보고서가 클립보드에 복사되었습니다',
+    formIncomplete: '모든 필수 필드를 완성해 주십시오',
+    loading: '로딩 중...',
+    copyReport: '클립보드에 복사',
+    translating: '번역 중...',
+    
+    // Added for multi-page form
+    stepRequired: '계속하기 전에 이 단계의 모든 필드를 완성해 주십시오.',
+    formProgress: '{total} 중 {current}단계'
   }
 };

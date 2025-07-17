@@ -68,6 +68,7 @@ export async function translateReport(reportText: string, targetLanguage: string
     zh: "Chinese",
     ht: "Haitian Kreyol",
     tl: "Tagalog",
+    ko: "Korean",
   };
 
   try {
