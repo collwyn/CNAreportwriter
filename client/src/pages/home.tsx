@@ -27,16 +27,16 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-50">
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
+      <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               <img 
                 src={headerLogoImage} 
                 alt="CNA Genius Logo" 
-                className="h-8 w-8 rounded-md object-cover"
+                className="h-16 w-16 rounded-lg object-cover"
               />
-              <h1 className="text-xl font-semibold text-gray-800">
+              <h1 className="text-3xl font-semibold text-gray-800">
                 CNA Genius
               </h1>
             </div>
