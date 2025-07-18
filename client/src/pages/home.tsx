@@ -45,7 +45,7 @@ export default function Home() {
               className="text-xs text-gray-500 hover:text-gray-700 underline"
               style={{ fontSize: '10px' }}
             >
-              Admin
+              {t("admin")}
             </a>
           </div>
           <LanguageSelector />
@@ -57,15 +57,13 @@ export default function Home() {
         <div className="text-center mb-12">
           <NurseLogo />
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            CNA Incident Report Generator
+            {t("heroTitle")}
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-            This tool walks you through each step of creating a professional incident report. Just answer 
-            the questions, and we'll generate a properly formatted report you can use at work.
+            {t("heroDescription")}
           </p>
           <p className="text-base text-gray-500 max-w-xl mx-auto mb-8">
-            Built by a developer to help a CNA friend – now helping healthcare workers everywhere 
-            document incidents quickly and accurately.
+            {t("heroSubtitle")}
           </p>
         </div>
 
@@ -78,20 +76,20 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <div className="font-medium text-gray-900">Daily Report Generations</div>
+              <div className="font-medium text-gray-900">{t("dailyReportsTitle")}</div>
               <div className="text-sm text-gray-600">
-                {rateLimitData?.used || 0} of {rateLimitData?.limit || 5} used • Resets in 24 hours
+                {t("dailyReportsUsed", { used: rateLimitData?.used || 0, limit: rateLimitData?.limit || 3 })}
               </div>
             </div>
             <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-              {rateLimitData?.remaining || 5} remaining
+              {rateLimitData?.remaining || 3} {t("remaining")}
             </div>
           </div>
           <div className="text-2xl font-bold text-gray-900">
-            {rateLimitData?.remaining || 5}
+            {rateLimitData?.remaining || 3}
           </div>
           <div className="text-sm text-gray-500 font-medium">
-            LEFT TODAY
+            {t("leftToday")}
           </div>
         </div>
 
