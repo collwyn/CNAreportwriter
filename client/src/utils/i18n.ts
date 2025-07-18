@@ -556,8 +556,8 @@ export const translations = {
     translating: 'Tradiksyon...'
   },
   tl: {
-    appTitle: 'CNA Incident Report Generator',
-    heroTitle: 'CNA Incident Report Generator',
+    appTitle: 'CNA Generator ng Ulat ng Insidente',
+    heroTitle: 'CNA Generator ng Ulat ng Insidente',
     heroDescription: 'Ginagabayan ka ng tool na ito sa bawat hakbang ng paggawa ng propesyonal na ulat ng insidente. Sumagot lang sa mga tanong, at gagawa kami ng tamang format na ulat na magagamit mo sa trabaho.',
     heroSubtitle: 'Ginawa ng developer para tumulong sa kaibigan na CNA - ngayon tumutulong sa mga healthcare worker sa buong mundo na mabilis at tamang ma-dokumento ang mga insidente.',
     dailyReportsTitle: 'Araw-arawang Pagbuo ng Ulat',
