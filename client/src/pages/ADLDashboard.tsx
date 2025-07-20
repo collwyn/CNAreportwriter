@@ -145,7 +145,7 @@ export default function ADLDashboard() {
                 {t('quickAdlEntry')}
               </CardTitle>
               <CardDescription>
-                Fast mobile-optimized entry for common ADL activities
+                {t('quickAdlEntryDescription')}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -154,10 +154,10 @@ export default function ADLDashboard() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center text-lg">
                 <FileText className="h-5 w-5 mr-2 text-green-600" />
-                Daily Summaries
+                {t('dailySummaries')}
               </CardTitle>
               <CardDescription>
-                View and generate AI-powered daily care summaries
+                {t('dailySummariesDescription')}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -166,10 +166,10 @@ export default function ADLDashboard() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center text-lg">
                 <Search className="h-5 w-5 mr-2 text-purple-600" />
-                Patient Search
+                {t('patientSearch')}
               </CardTitle>
               <CardDescription>
-                Find patients and view their ADL history
+                {t('patientSearchDescription')}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -180,17 +180,17 @@ export default function ADLDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Users className="h-5 w-5 mr-2" />
-              Active Patients ({patients?.length || 0})
+              {t('activePatients')} ({patients?.length || 0})
             </CardTitle>
             <CardDescription>
-              Patients requiring ADL documentation today
+              {t('patientsRequiringDocumentation')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {isLoading ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="text-gray-600 mt-2">Loading patients...</p>
+                <p className="text-gray-600 mt-2">{t('loadingPatients')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -202,7 +202,7 @@ export default function ADLDashboard() {
                     <div className="flex items-center space-x-4">
                       <div>
                         <h3 className="font-medium text-gray-900">{patient.name}</h3>
-                        <p className="text-sm text-gray-600">Room {patient.roomNumber}</p>
+                        <p className="text-sm text-gray-600">{t('room')} {patient.roomNumber}</p>
                       </div>
                       <Badge className={getCareLevel(patient.careLevel).color}>
                         {getCareLevel(patient.careLevel).text}
@@ -212,14 +212,14 @@ export default function ADLDashboard() {
                     <div className="flex items-center space-x-4">
                       <Button size="sm" onClick={() => handlePatientSelect(patient)}>
                         <ClipboardList className="h-4 w-4 mr-2" />
-                        Enter ADL
+                        {t('enterAdl')}
                       </Button>
                     </div>
                   </div>
                 ))}
                 {patients?.length === 0 && (
                   <div className="text-center py-8 text-gray-500">
-                    No patients found. Add patients to start ADL tracking.
+                    {t('noPatients')}
                   </div>
                 )}
               </div>
@@ -229,23 +229,23 @@ export default function ADLDashboard() {
 
         {/* ADL Categories Quick Reference */}
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">ADL Categories</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('adlCategories')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { name: "Bathing", icon: "🛁", description: "Personal hygiene, showering" },
-              { name: "Dressing", icon: "👔", description: "Getting dressed, assistance" },
-              { name: "Eating", icon: "🍽️", description: "Meal consumption, nutrition" },
-              { name: "Mobility", icon: "🚶", description: "Walking, transferring" },
-              { name: "Toileting", icon: "🚽", description: "Bathroom assistance" },
-              { name: "Communication", icon: "💬", description: "Patient interactions" }
+              { nameKey: "bathing", icon: "🛁", descriptionKey: "bathingDescription" },
+              { nameKey: "dressing", icon: "👔", descriptionKey: "dressingDescription" },
+              { nameKey: "eating", icon: "🍽️", descriptionKey: "eatingDescription" },
+              { nameKey: "mobility", icon: "🚶", descriptionKey: "mobilityDescription" },
+              { nameKey: "toileting", icon: "🚽", descriptionKey: "toiletingDescription" },
+              { nameKey: "communication", icon: "💬", descriptionKey: "communicationDescription" }
             ].map((category) => (
-              <Card key={category.name} className="hover:shadow-sm transition-shadow">
+              <Card key={category.nameKey} className="hover:shadow-sm transition-shadow">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{category.icon}</span>
                     <div>
-                      <h3 className="font-medium text-gray-900">{category.name}</h3>
-                      <p className="text-xs text-gray-600">{category.description}</p>
+                      <h3 className="font-medium text-gray-900">{t(category.nameKey)}</h3>
+                      <p className="text-xs text-gray-600">{t(category.descriptionKey)}</p>
                     </div>
                   </div>
                 </CardContent>
