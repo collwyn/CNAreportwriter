@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Home from "@/pages/home";
+import ADLDashboard from "@/pages/ADLDashboard";
 import NotFound from "@/pages/not-found";
 import FeedbackDashboard from "@/pages/feedback-dashboard";
 
@@ -12,6 +13,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/adl-dashboard" component={ADLDashboard} />
       <Route path="/admin/feedback" component={FeedbackDashboard} />
       <Route component={NotFound} />
     </Switch>

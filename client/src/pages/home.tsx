@@ -8,7 +8,10 @@ import { RateLimitAlert } from "@/components/RateLimitAlert";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { Footer } from "@/components/Footer";
 import { NurseLogo } from "@/components/NurseLogo";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useRateLimit } from "@/hooks/useRateLimit";
+import { Link } from "wouter";
 import headerLogoImage from "@assets/cnageniuslogo_1752779536382.jpg";
 
 export default function Home() {
@@ -98,8 +101,53 @@ export default function Home() {
           <RateLimitAlert />
         </div>
         
+        {/* Navigation Cards - Choose Your Tool */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-blue-200 bg-blue-50">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Incident Report Writer</h3>
+              <p className="text-gray-600 mb-4">Create professional incident reports with AI assistance</p>
+              <Button 
+                onClick={() => {
+                  // Scroll to form section
+                  const formSection = document.getElementById('incident-form-section');
+                  formSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                Start Incident Report
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-green-200 bg-green-50">
+            <CardContent className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-green-600 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h4a2 2 0 002-2V3a2 2 0 012 2v6a2 2 0 01-2 2V9a2 2 0 00-2-2H8a2 2 0 00-2 2v2a2 2 0 01-2-2V5zM8 11v-1h4v1H8z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">ADL Tracker</h3>
+              <p className="text-gray-600 mb-4">Document daily care activities and patient progress</p>
+              <Link href="/adl-dashboard">
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Open ADL Tracker
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Form Section */}
-        <SimpleForm onReportGenerated={handleReportGenerated} />
+        <div id="incident-form-section">
+          <SimpleForm onReportGenerated={handleReportGenerated} />
+        </div>
         
         {generatedReport && (
           <>

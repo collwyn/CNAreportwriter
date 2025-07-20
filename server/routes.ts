@@ -195,6 +195,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ADL System Routes
+  
+  // Get all patients
+  app.get("/api/patients", async (req, res) => {
+    try {
+      const { eq } = await import("drizzle-orm");
+      const { patients } = await import("@shared/schema");
+      const allPatients = await db.select().from(patients);
+      res.json(allPatients);
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+      res.status(500).json({ message: "Error fetching patients" });
+    }
+  });
+
+  // Create new patient
+  app.post("/api/patients", async (req, res) => {
+    try {
+      const { insertPatientSchema, patients } = await import("@shared/schema");
+      const validationResult = insertPatientSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid patient data", 
+          errors: validationResult.error.format() 
+        });
+      }
+      
+      const [newPatient] = await db.insert(patients).values(validationResult.data).returning();
+      res.status(201).json(newPatient);
+    } catch (error) {
+      console.error("Error creating patient:", error);
+      res.status(500).json({ message: "Error creating patient" });
+    }
+  });
+
+  // Get ADL categories
+  app.get("/api/adl-categories", async (req, res) => {
+    try {
+      const { adlCategories } = await import("@shared/schema");
+      const categories = await db.select().from(adlCategories);
+      
+      // Initialize default categories if none exist
+      if (categories.length === 0) {
+        const defaultCategories = [
+          { name: "Bathing", description: "Personal hygiene, showering, grooming" },
+          { name: "Dressing", description: "Getting dressed, assistance level needed" },
+          { name: "Eating", description: "Meal consumption, nutrition assistance" },
+          { name: "Mobility", description: "Walking, transferring, wheelchair use" },
+          { name: "Toileting", description: "Bathroom assistance, continence status" },
+          { name: "Communication", description: "Patient interactions, cognitive status" }
+        ];
+        
+        await db.insert(adlCategories).values(defaultCategories);
+        const newCategories = await db.select().from(adlCategories);
+        return res.json(newCategories);
+      }
+      
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching ADL categories:", error);
+      res.status(500).json({ message: "Error fetching ADL categories" });
+    }
+  });
+
+  // Create ADL entry
+  app.post("/api/adl-entries", async (req, res) => {
+    try {
+      const { insertAdlEntrySchema, adlEntries } = await import("@shared/schema");
+      const validationResult = insertAdlEntrySchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid ADL entry data", 
+          errors: validationResult.error.format() 
+        });
+      }
+      
+      const [newEntry] = await db.insert(adlEntries).values(validationResult.data).returning();
+      res.status(201).json(newEntry);
+    } catch (error) {
+      console.error("Error creating ADL entry:", error);
+      res.status(500).json({ message: "Error creating ADL entry" });
+    }
+  });
+
+  // Get ADL entries for specific patient and date
+  app.get("/api/adl-entries/patient/:patientId/date/:date", async (req, res) => {
+    try {
+      const { eq } = await import("drizzle-orm");
+      const { adlEntries } = await import("@shared/schema");
+      const { patientId, date } = req.params;
+      const entries = await db
+        .select()
+        .from(adlEntries)
+        .where(eq(adlEntries.patientId, parseInt(patientId)))
+        .where(eq(adlEntries.entryDate, date));
+      
+      res.json(entries);
+    } catch (error) {
+      console.error("Error fetching ADL entries:", error);
+      res.status(500).json({ message: "Error fetching ADL entries" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

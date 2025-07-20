@@ -129,6 +129,19 @@ export const translations = {
     next: 'Next',
     previous: 'Previous',
     
+    // ADL System translations
+    adlTracker: 'ADL Tracker',
+    adlTrackerDescription: 'Document daily care activities and patient progress',
+    incidentReportWriter: 'Incident Report Writer',
+    incidentReportDescription: 'Create professional incident reports with AI assistance',
+    startIncidentReport: 'Start Incident Report',
+    openAdlTracker: 'Open ADL Tracker',
+    selectPatient: 'Select Patient',
+    activePatients: 'Active Patients',
+    quickAdlEntry: 'Quick ADL Entry',
+    dailySummaries: 'Daily Summaries',
+    patientSearch: 'Patient Search',
+    
     // Added for multi-page form
     stepRequired: 'Please complete all fields in this step before continuing.',
     formProgress: 'Step {current} of {total}',

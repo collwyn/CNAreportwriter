@@ -1,7 +1,11 @@
-# CNA Incident Report Generator
+# CNA Genius - Healthcare Documentation Platform
 
 ## Overview
-This is a multi-language CNA (Certified Nursing Assistant) incident report application that streamlines the process of creating professional incident reports with AI assistance. The application uses AI-powered report generation to convert form data into grammatically correct, first-person narrative reports and supports translation into multiple languages.
+CNA Genius is a comprehensive healthcare documentation platform designed for Certified Nursing Assistants (CNAs). The platform features two main tools:
+
+1. **Incident Report Generator** - Streamlines the creation of professional incident reports with AI assistance, converting form data into grammatically correct, first-person narrative reports with multi-language support.
+
+2. **ADL Tracker** - A new Activities of Daily Living tracking system that allows CNAs to quickly document patient care activities, assistance levels, and generate AI-powered daily summaries for Medicare compliance.
 
 ## System Architecture
 
@@ -96,6 +100,17 @@ This is a multi-language CNA (Certified Nursing Assistant) incident report appli
 - Safe deployment with rollback capabilities
 
 ## Recent Changes
+- January 14, 2025: Integrated ADL (Activities of Daily Living) Tracker System
+  - Added complete database schema for patients, ADL categories, entries, and daily summaries
+  - Created patient management system with care level tracking (skilled, assisted, independent)
+  - Implemented quick ADL entry form with mobile-optimized interface
+  - Built navigation system allowing users to switch between incident reports and ADL tracking
+  - Added 6 default ADL categories: Bathing, Dressing, Eating, Mobility, Toileting, Communication
+  - Pre-populated database with sample patients for development and testing
+  - Created patient selector component with search functionality
+  - Integrated with existing authentication and rate limiting systems
+  - Maintained consistency with existing UI design patterns using Shadcn/UI
+
 - January 13, 2025: Added comprehensive feedback analytics tracking system
   - Analytics tracking for feedback form views and submissions
   - Database schema updated with feedback analytics table
