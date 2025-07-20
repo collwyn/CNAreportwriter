@@ -37,13 +37,14 @@ type FormData = {
 };
 
 interface SimpleFormProps {
-  onReportGenerated: (report: string) => void;
+  onReportGenerated?: (report: string) => void;
+  preSelectedPatient?: any;
 }
 
 // Define steps as 1-based index
 type FormStep = 1 | 2 | 3 | 4 | 5 | 6;
 
-export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
+export function SimpleForm({ onReportGenerated, preSelectedPatient }: SimpleFormProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -55,8 +56,8 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
     shiftTime: "",
     floor: "",
     supervisorOnDuty: "",
-    patientName: "",
-    patientRoom: "",
+    patientName: preSelectedPatient?.name || "",
+    patientRoom: preSelectedPatient?.roomNumber || "",
     incidentTime: "",
     incidentNature: "",
     incidentDescription: "",
@@ -70,7 +71,9 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
   const generateReportMutation = useMutation({
     mutationFn: generateReport,
     onSuccess: (data) => {
-      onReportGenerated(data.report.generatedReport);
+      if (onReportGenerated) {
+        onReportGenerated(data.report.generatedReport);
+      }
       // Refresh rate limit status after successful generation
       queryClient.invalidateQueries({ queryKey: ['rateLimit'] });
       toast({
@@ -588,3 +591,5 @@ export function SimpleForm({ onReportGenerated }: SimpleFormProps) {
     </Card>
   );
 }
+
+export default SimpleForm;

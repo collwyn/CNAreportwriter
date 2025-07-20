@@ -223,7 +223,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const [newPatient] = await db.insert(patients).values(validationResult.data).returning();
+      const patientData = validationResult.data;
+      const [newPatient] = await db.insert(patients).values(patientData).returning();
+      
       res.status(201).json(newPatient);
     } catch (error) {
       console.error("Error creating patient:", error);

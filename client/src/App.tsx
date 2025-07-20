@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Home from "@/pages/home";
 import ADLDashboard from "@/pages/ADLDashboard";
+import IncidentReportWithPatient from "@/pages/IncidentReportWithPatient";
 import NotFound from "@/pages/not-found";
 import FeedbackDashboard from "@/pages/feedback-dashboard";
 
@@ -13,6 +14,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/incident-report" component={IncidentReportWithPatient} />
       <Route path="/adl-dashboard" component={ADLDashboard} />
       <Route path="/admin/feedback" component={FeedbackDashboard} />
       <Route component={NotFound} />

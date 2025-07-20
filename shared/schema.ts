@@ -19,6 +19,7 @@ export const reports = pgTable("reports", {
   shiftTime: text("shift_time").notNull(),
   floor: text("floor").notNull(),
   supervisorOnDuty: text("supervisor_on_duty").notNull(),
+  patientId: integer("patient_id").references(() => patients.id),
   patientName: text("patient_name").notNull(),
   patientRoom: text("patient_room").notNull(),
   incidentTime: text("incident_time").notNull(),
@@ -36,6 +37,20 @@ export const insertReportSchema = createInsertSchema(reports).omit({
   id: true,
   generatedReport: true,
   createdAt: true
+});
+
+// Patient selection/creation schema for reports
+export const reportPatientSchema = z.object({
+  useExistingPatient: z.boolean(),
+  patientId: z.number().optional(),
+  patientName: z.string(),
+  patientRoom: z.string(),
+  // New patient fields
+  admissionDate: z.string().optional(),
+  careLevel: z.enum(['skilled', 'assisted', 'independent']).optional(),
+  dietaryRestrictions: z.string().optional(),
+  mobilityAids: z.string().optional(),
+  cognitiveStatus: z.enum(['alert', 'confused', 'dementia']).optional(),
 });
 
 export const translateReportSchema = z.object({

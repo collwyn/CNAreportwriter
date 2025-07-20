@@ -112,16 +112,11 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('incidentReportWriter')}</h3>
               <p className="text-gray-600 mb-4">{t('incidentReportDescription')}</p>
-              <Button 
-                onClick={() => {
-                  // Scroll to form section
-                  const formSection = document.getElementById('incident-form-section');
-                  formSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="w-full bg-blue-600 hover:bg-blue-700"
-              >
-                {t('startIncidentReport')}
-              </Button>
+              <Link to="/incident-report">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  {t('startIncidentReport')}
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 

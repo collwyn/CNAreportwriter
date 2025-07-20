@@ -10,6 +10,7 @@ import { ArrowLeft, Users, ClipboardList, FileText, Plus, Search } from "lucide-
 import { Link } from "wouter";
 import { PatientSelector } from "@/components/adl/PatientSelector";
 import { ADLQuickEntry } from "@/components/adl/ADLQuickEntry";
+import ComprehensivePatientSelector from "@/components/PatientSelector";
 import type { Patient } from "@shared/schema";
 import headerLogoImage from "@assets/cnageniuslogo_1752779536382.jpg";
 
@@ -33,9 +34,11 @@ export default function ADLDashboard() {
     return levels[level as keyof typeof levels] || levels.assisted;
   };
 
-  const handlePatientSelect = (patient: Patient) => {
+  const handlePatientSelect = (patient: Patient | null, isNew?: boolean) => {
     setSelectedPatient(patient);
-    setViewMode('quick-entry');
+    if (patient) {
+      setViewMode('quick-entry');
+    }
   };
 
   const handleBackToDashboard = () => {
@@ -70,7 +73,11 @@ export default function ADLDashboard() {
         </header>
 
         <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow">
-          <PatientSelector onPatientSelect={handlePatientSelect} />
+          <ComprehensivePatientSelector 
+            onPatientSelect={handlePatientSelect}
+            selectedPatient={selectedPatient}
+            context="adl"
+          />
         </main>
 
         <Footer />
