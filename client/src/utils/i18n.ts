@@ -805,7 +805,10 @@ export const translations = {
     incidentReportWriter: 'Ecrivè Rapò Ensidan',
     adlTracker: 'Swivan ADL',
     incidentReportWriterDescription: 'Kreye rapò ensidan pwofesyonèl ak èd AI',
+    incidentReportDescription: 'Kreye rapò ensidan pwofesyonèl ak èd AI',
     adlTrackerDescription: 'Dokumente aktivite swen chak jou ak pwogre pasyan',
+    startIncidentReport: 'Kòmanse Rapò Ensidan',
+    openAdlTracker: 'Ouvè Swivan ADL',
     
     // ADL Tracker specific
     dailySummaries: 'Rezime Chak Jou',
@@ -1166,7 +1169,10 @@ export const translations = {
     incidentReportWriter: '사고 보고서 작성기',
     adlTracker: 'ADL 추적기',
     incidentReportWriterDescription: 'AI 지원으로 전문 사고 보고서 생성',
+    incidentReportDescription: 'AI 지원으로 전문 사고 보고서 생성',
     adlTrackerDescription: '일상 생활 활동과 환자 진행 상황 문서화',
+    startIncidentReport: '사고 보고서 시작',
+    openAdlTracker: 'ADL 추적기 열기',
     
     // ADL Tracker specific
     dailySummaries: '일일 요약',
