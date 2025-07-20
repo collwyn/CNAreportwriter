@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { generateReport, translateReport } from "./openai";
 import { insertReportSchema, translateReportSchema, insertFeedbackSchema, insertFeedbackAnalyticsSchema } from "@shared/schema";
 import { reportRateLimit } from "./rateLimit";
+import { db } from "./db";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Debug route to check server routing
@@ -200,7 +201,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all patients
   app.get("/api/patients", async (req, res) => {
     try {
-      const { eq } = await import("drizzle-orm");
       const { patients } = await import("@shared/schema");
       const allPatients = await db.select().from(patients);
       res.json(allPatients);
@@ -284,14 +284,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get ADL entries for specific patient and date
   app.get("/api/adl-entries/patient/:patientId/date/:date", async (req, res) => {
     try {
-      const { eq } = await import("drizzle-orm");
+      const { eq, and } = await import("drizzle-orm");
       const { adlEntries } = await import("@shared/schema");
       const { patientId, date } = req.params;
       const entries = await db
         .select()
         .from(adlEntries)
-        .where(eq(adlEntries.patientId, parseInt(patientId)))
-        .where(eq(adlEntries.entryDate, date));
+        .where(and(
+          eq(adlEntries.patientId, parseInt(patientId)),
+          eq(adlEntries.entryDate, date)
+        ));
       
       res.json(entries);
     } catch (error) {
