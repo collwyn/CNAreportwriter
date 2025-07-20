@@ -973,10 +973,13 @@ export const translations = {
     ratingExcellent: 'Napaka-ganda',
     
     // Home page navigation
-    incidentReportWriter: 'Incident Report Writer',
-    adlTracker: 'ADL Tracker',
+    incidentReportWriter: 'Manunulat ng Ulat ng Insidente',
+    adlTracker: 'Tagasubaybay ng ADL',
     incidentReportWriterDescription: 'Gumawa ng professional incident report na may AI assistance',
+    incidentReportDescription: 'Gumawa ng professional incident report na may AI assistance',
     adlTrackerDescription: 'I-document ang araw-arawang care activities at patient progress',
+    startIncidentReport: 'Simulan ang Incident Report',
+    openAdlTracker: 'Buksan ang ADL Tracker',
     
     // ADL Tracker specific
     dailySummaries: 'Araw-arawang Buod',
