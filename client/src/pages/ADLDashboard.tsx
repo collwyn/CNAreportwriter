@@ -26,9 +26,9 @@ export default function ADLDashboard() {
 
   const getCareLevel = (level: string) => {
     const levels = {
-      skilled: { text: "Skilled Care", color: "bg-red-100 text-red-800" },
-      assisted: { text: "Assisted Living", color: "bg-yellow-100 text-yellow-800" },
-      independent: { text: "Independent", color: "bg-green-100 text-green-800" }
+      skilled: { text: t('skilledCare'), color: "bg-red-100 text-red-800" },
+      assisted: { text: t('assistedLiving'), color: "bg-yellow-100 text-yellow-800" },
+      independent: { text: t('independent'), color: "bg-green-100 text-green-800" }
     };
     return levels[level as keyof typeof levels] || levels.assisted;
   };
@@ -53,7 +53,7 @@ export default function ADLDashboard() {
               <div className="flex items-center space-x-4">
                 <Button variant="ghost" size="sm" onClick={handleBackToDashboard}>
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Dashboard
+                  {t('backToDashboard')}
                 </Button>
                 <img 
                   src={headerLogoImage} 
@@ -61,7 +61,7 @@ export default function ADLDashboard() {
                   className="h-16 w-16 rounded-lg object-cover"
                 />
                 <h1 className="text-3xl font-semibold text-gray-800">
-                  Select Patient
+                  {t('selectPatient')}
                 </h1>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function ADLDashboard() {
                   className="h-16 w-16 rounded-lg object-cover"
                 />
                 <h1 className="text-3xl font-semibold text-gray-800">
-                  ADL Entry
+                  {t('adlEntry')}
                 </h1>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function ADLDashboard() {
               <Link href="/">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Home
+                  {t('backToHome')}
                 </Button>
               </Link>
               <img 
@@ -127,7 +127,7 @@ export default function ADLDashboard() {
                 className="h-16 w-16 rounded-lg object-cover"
               />
               <h1 className="text-3xl font-semibold text-gray-800">
-                ADL Tracker
+                {t('adlTracker')}
               </h1>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function ADLDashboard() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center text-lg">
                 <Plus className="h-5 w-5 mr-2 text-blue-600" />
-                Quick ADL Entry
+                {t('quickAdlEntry')}
               </CardTitle>
               <CardDescription>
                 Fast mobile-optimized entry for common ADL activities

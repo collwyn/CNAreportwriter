@@ -110,8 +110,8 @@ export default function Home() {
                   <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Incident Report Writer</h3>
-              <p className="text-gray-600 mb-4">Create professional incident reports with AI assistance</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('incidentReportWriter')}</h3>
+              <p className="text-gray-600 mb-4">{t('incidentReportDescription')}</p>
               <Button 
                 onClick={() => {
                   // Scroll to form section
@@ -120,7 +120,7 @@ export default function Home() {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
-                Start Incident Report
+                {t('startIncidentReport')}
               </Button>
             </CardContent>
           </Card>
@@ -133,11 +133,11 @@ export default function Home() {
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h4a2 2 0 002-2V3a2 2 0 012 2v6a2 2 0 01-2 2V9a2 2 0 00-2-2H8a2 2 0 00-2 2v2a2 2 0 01-2-2V5zM8 11v-1h4v1H8z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">ADL Tracker</h3>
-              <p className="text-gray-600 mb-4">Document daily care activities and patient progress</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('adlTracker')}</h3>
+              <p className="text-gray-600 mb-4">{t('adlTrackerDescription')}</p>
               <Link href="/adl-dashboard">
                 <Button className="w-full bg-green-600 hover:bg-green-700">
-                  Open ADL Tracker
+                  {t('openAdlTracker')}
                 </Button>
               </Link>
             </CardContent>
