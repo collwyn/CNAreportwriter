@@ -62,9 +62,17 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Welcome to CnaGenius - Your Daily Care Companion
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xl font-bold text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
             Making Every Shift Easier, One Task at a Time
           </p>
+          <div className="text-base text-gray-700 max-w-4xl mx-auto mb-8 leading-relaxed text-left">
+            <p className="mb-4">
+              We know your days are long, your work is demanding, and your time with patients is precious. As a Certified Nursing Assistant, you're the heart of healthcare—providing comfort, dignity, and essential care to those who need it most. But we also know that paperwork, documentation, and administrative tasks can take away from what you do best: caring for people.
+            </p>
+            <p>
+              That's why we created CnaGenius—a complete suite of smart tools designed specifically for CNAs like you. Whether you're documenting an incident, tracking daily activities, or preparing shift handoff reports, our AI-powered platform transforms time-consuming paperwork into quick, professional documentation that meets all healthcare standards.
+            </p>
+          </div>
         </div>
 
         {/* Daily Report Generations Card */}
