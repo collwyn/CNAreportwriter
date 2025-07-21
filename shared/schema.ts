@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, date, time, json } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, date, time, json, varchar, decimal } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -217,6 +217,85 @@ export const insertFeedbackAnalyticsSchema_complete = createInsertSchema(feedbac
   timestamp: true,
 });
 
+// Shift Handoff Schema - NEW FEATURE
+export const shiftSessions = pgTable("shift_sessions", {
+  id: serial("id").primaryKey(),
+  cnaName: varchar("cna_name", { length: 255 }).notNull(),
+  facilityFloor: varchar("facility_floor", { length: 100 }),
+  shiftType: varchar("shift_type", { length: 50 }).notNull(), // morning, day, evening, night
+  shiftStart: timestamp("shift_start").notNull(),
+  shiftEnd: timestamp("shift_end"),
+  status: varchar("status", { length: 20 }).default("active").notNull(), // active, completed, handed_off
+  totalPatients: integer("total_patients").default(0),
+  totalIncidents: integer("total_incidents").default(0),
+  totalAdlEntries: integer("total_adl_entries").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const shiftNotes = pgTable("shift_notes", {
+  id: serial("id").primaryKey(),
+  shiftSessionId: integer("shift_session_id").references(() => shiftSessions.id).notNull(),
+  patientName: varchar("patient_name", { length: 255 }),
+  patientRoom: varchar("patient_room", { length: 50 }),
+  noteType: varchar("note_type", { length: 50 }).notNull(), // general, priority, family, medical, supply
+  noteText: text("note_text").notNull(),
+  priorityLevel: varchar("priority_level", { length: 20 }).default("normal").notNull(), // urgent, high, normal, low
+  voiceNoteUrl: varchar("voice_note_url", { length: 500 }), // future: audio recordings
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const handoffReports = pgTable("handoff_reports", {
+  id: serial("id").primaryKey(),
+  shiftSessionId: integer("shift_session_id").references(() => shiftSessions.id).notNull(),
+  outgoingCna: varchar("outgoing_cna", { length: 255 }).notNull(),
+  incomingCna: varchar("incoming_cna", { length: 255 }),
+  generatedSummary: text("generated_summary").notNull(),
+  priorityAlerts: json("priority_alerts"), // urgent items requiring immediate attention
+  patientSummaries: json("patient_summaries"), // per-patient status updates
+  completedActivities: json("completed_activities"), // what was accomplished this shift
+  itemsForNextShift: json("items_for_next_shift"), // tasks/follow-ups for incoming staff
+  supplyNotes: text("supply_notes"),
+  familyCommunications: text("family_communications"),
+  handoffConfirmed: boolean("handoff_confirmed").default(false),
+  handoffConfirmedAt: timestamp("handoff_confirmed_at"),
+  language: varchar("language", { length: 10 }).default("en"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const shiftMetrics = pgTable("shift_metrics", {
+  id: serial("id").primaryKey(),
+  shiftSessionId: integer("shift_session_id").references(() => shiftSessions.id).notNull(),
+  totalDocumentationTime: integer("total_documentation_time"), // minutes spent on documentation
+  handoffPreparationTime: integer("handoff_preparation_time"), // minutes to prepare handoff
+  patientSatisfactionScore: decimal("patient_satisfaction_score", { precision: 3, scale: 2 }), // if collected
+  incidentsCount: integer("incidents_count").default(0),
+  adlCompletionRate: decimal("adl_completion_rate", { precision: 5, scale: 2 }), // percentage
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Shift handoff schemas
+export const insertShiftSessionSchema = createInsertSchema(shiftSessions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertShiftNoteSchema = createInsertSchema(shiftNotes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertHandoffReportSchema = createInsertSchema(handoffReports).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertShiftMetricsSchema = createInsertSchema(shiftMetrics).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -228,3 +307,13 @@ export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
 export type Feedback = typeof feedback.$inferSelect;
 export type InsertFeedbackAnalytics = z.infer<typeof insertFeedbackAnalyticsSchema>;
 export type FeedbackAnalytics = typeof feedbackAnalytics.$inferSelect;
+
+// Shift handoff types
+export type ShiftSession = typeof shiftSessions.$inferSelect;
+export type InsertShiftSession = z.infer<typeof insertShiftSessionSchema>;
+export type ShiftNote = typeof shiftNotes.$inferSelect;
+export type InsertShiftNote = z.infer<typeof insertShiftNoteSchema>;
+export type HandoffReport = typeof handoffReports.$inferSelect;
+export type InsertHandoffReport = z.infer<typeof insertHandoffReportSchema>;
+export type ShiftMetrics = typeof shiftMetrics.$inferSelect;
+export type InsertShiftMetrics = z.infer<typeof insertShiftMetricsSchema>;

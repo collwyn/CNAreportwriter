@@ -439,6 +439,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Import and use shift handoff route modules
+  const shiftsRoutes = await import("./routes/shifts");
+  const handoffRoutes = await import("./routes/handoff");
+
+  app.use("/api/shifts", shiftsRoutes.default);
+  app.use("/api/handoff", handoffRoutes.default);
+
   const httpServer = createServer(app);
 
   return httpServer;
