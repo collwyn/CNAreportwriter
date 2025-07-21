@@ -331,7 +331,32 @@ export const translations = {
     topHelpfulFeatures: 'Top Helpful Features',
     commonSuggestions: 'Common Suggestions',
     mentions: 'mentions',
-    invalidAccessKey: 'Invalid access key'
+    invalidAccessKey: 'Invalid access key',
+
+    // Authentication
+    signUp: 'Sign Up',
+    signIn: 'Sign In',
+    signOut: 'Sign Out',
+    createAccount: 'Create Account',
+    signInDescription: 'Welcome back! Please sign in to your account.',
+    signUpDescription: 'Create your account to get started with CNA Genius.',
+    signUpWithGoogle: 'Sign up with Google',
+    signUpWithFacebook: 'Sign up with Facebook',
+    signInWithGoogle: 'Sign in with Google',
+    signInWithFacebook: 'Sign in with Facebook',
+    orContinueWith: 'or continue with',
+    email: 'Email',
+    password: 'Password',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    enterEmail: 'Enter your email',
+    enterPassword: 'Enter your password',
+    enterFirstName: 'Enter your first name',
+    enterLastName: 'Enter your last name',
+    signingIn: 'Signing In...',
+    creatingAccount: 'Creating Account...',
+    dontHaveAccount: "Don't have an account? Sign up",
+    alreadyHaveAccount: 'Already have an account? Sign in'
   },
   es: {
     appTitle: 'Generador de Informes de Incidentes para CNA',

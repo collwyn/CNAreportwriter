@@ -9,6 +9,7 @@ import { RateLimitDisplay } from '@/components/RateLimitDisplay';
 import { useRateLimit } from '@/hooks/useRateLimit';
 import TopNavigation from '@/components/TopNavigation';
 import PatientSelector from '@/components/PatientSelector';
+import IncidentReportWithPatient from '@/pages/IncidentReportWithPatient';
 
 export default function IncidentReportPage() {
   const { t } = useLanguage();
@@ -16,8 +17,6 @@ export default function IncidentReportPage() {
   const { data: rateLimitData } = useRateLimit();
 
   if (selectedPatient) {
-    // Import and use the existing IncidentReportWithPatient component
-    const IncidentReportWithPatient = require('@/pages/IncidentReportWithPatient').default;
     return <IncidentReportWithPatient patient={selectedPatient} onBack={() => setSelectedPatient(null)} />;
   }
 
