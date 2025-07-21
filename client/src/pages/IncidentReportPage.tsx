@@ -7,6 +7,7 @@ import { FileText, Home, Activity } from 'lucide-react';
 import { RateLimitAlert } from '@/components/RateLimitAlert';
 import { RateLimitDisplay } from '@/components/RateLimitDisplay';
 import { useRateLimit } from '@/hooks/useRateLimit';
+import TopNavigation from '@/components/TopNavigation';
 import PatientSelector from '@/components/PatientSelector';
 
 export default function IncidentReportPage() {
@@ -21,39 +22,20 @@ export default function IncidentReportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-8">
-              <Link href="/">
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <Home className="w-4 h-4" />
-                  <span>{t('backToHome')}</span>
-                </Button>
-              </Link>
-              <Link href="/adl-dashboard">
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <Activity className="w-4 h-4" />
-                  <span>{t('adlTracker')}</span>
-                </Button>
-              </Link>
-              <div className="flex items-center space-x-2 text-blue-600">
-                <FileText className="w-4 h-4" />
-                <span className="font-medium">{t('incidentReportWriter')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="flex flex-col min-h-screen bg-neutral-50">
+      <TopNavigation />
 
-      <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl font-semibold text-gray-800">
             {t('incidentReportWriter')}
           </h1>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow">
+        {/* Description */}
+        <div className="text-center mb-8">
           <p className="text-lg text-gray-600">
             {t('incidentReportDescription')}
           </p>
@@ -117,7 +99,7 @@ export default function IncidentReportPage() {
             {t('introText')}
           </p>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
