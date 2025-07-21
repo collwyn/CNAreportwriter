@@ -52,25 +52,17 @@ export default function ADLDashboard() {
     return (
       <div className="flex flex-col min-h-screen bg-neutral-50">
         <TopNavigation />
-        <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
-          <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" onClick={handleBackToDashboard}>
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {t('backToDashboard')}
-                </Button>
-                <img 
-                  src={headerLogoImage} 
-                  alt="CNA Genius Logo" 
-                  className="h-16 w-16 rounded-lg object-cover"
-                />
-                <h1 className="text-3xl font-semibold text-gray-800">
-                  {t('selectPatient')}
-                </h1>
-              </div>
+        <header className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="sm" onClick={handleBackToDashboard}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                {t('backToDashboard')}
+              </Button>
+              <h1 className="text-2xl font-semibold text-gray-800">
+                {t('selectPatient')}
+              </h1>
             </div>
-            <LanguageSelector />
           </div>
         </header>
 
@@ -92,21 +84,11 @@ export default function ADLDashboard() {
     return (
       <div className="flex flex-col min-h-screen bg-neutral-50">
         <TopNavigation />
-        <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
-          <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-4">
-                <img 
-                  src={headerLogoImage} 
-                  alt="CNA Genius Logo" 
-                  className="h-16 w-16 rounded-lg object-cover"
-                />
-                <h1 className="text-3xl font-semibold text-gray-800">
-                  {t('adlEntry')}
-                </h1>
-              </div>
-            </div>
-            <LanguageSelector />
+        <header className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <h1 className="text-2xl font-semibold text-gray-800">
+              {t('adlEntry')} - {selectedPatient.name}
+            </h1>
           </div>
         </header>
 
@@ -122,27 +104,11 @@ export default function ADLDashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <TopNavigation />
-      <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  {t('backToHome')}
-                </Button>
-              </Link>
-              <img 
-                src={headerLogoImage} 
-                alt="CNA Genius Logo" 
-                className="h-16 w-16 rounded-lg object-cover"
-              />
-              <h1 className="text-3xl font-semibold text-gray-800">
-                {t('adlTracker')}
-              </h1>
-            </div>
-          </div>
-          <LanguageSelector />
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl font-semibold text-gray-800">
+            {t('adlDashboard')}
+          </h1>
         </div>
       </header>
 

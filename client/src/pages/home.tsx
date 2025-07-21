@@ -17,28 +17,15 @@ export default function Home() {
       {/* Top Navigation */}
       <TopNavigation />
       
-      <header className="bg-white shadow-sm" style={{ height: '100px' }}>
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-4">
-              <img 
-                src={headerLogoImage} 
-                alt="CNA Genius Logo" 
-                className="h-16 w-16 rounded-lg object-cover"
-              />
-              <h1 className="text-3xl font-semibold text-gray-800">
-                CNA Genius
-              </h1>
-            </div>
-            <a 
-              href="/admin/feedback" 
-              className="text-xs text-gray-500 hover:text-gray-700 underline"
-              style={{ fontSize: '10px' }}
-            >
-              {t("admin")}
-            </a>
-          </div>
-          <LanguageSelector />
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-end">
+          <a 
+            href="/admin/feedback" 
+            className="text-xs text-gray-500 hover:text-gray-700 underline"
+            style={{ fontSize: '10px' }}
+          >
+            {t("admin")}
+          </a>
         </div>
       </header>
 
