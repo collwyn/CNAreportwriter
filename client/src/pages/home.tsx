@@ -59,14 +59,11 @@ export default function Home() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <NurseLogo />
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            {t("heroTitle")}
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Welcome to CnaGenius - Your Daily Care Companion
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-            {t("heroDescription")}
-          </p>
-          <p className="text-base text-gray-500 max-w-xl mx-auto mb-8">
-            {t("heroSubtitle")}
+            Making Every Shift Easier, One Task at a Time
           </p>
         </div>
 

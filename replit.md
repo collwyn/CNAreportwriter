@@ -100,6 +100,10 @@ CNA Genius is a comprehensive healthcare documentation platform designed for Cer
 - Safe deployment with rollback capabilities
 
 ## Recent Changes
+- January 22, 2025: Updated main page title to "Welcome to CnaGenius - Your Daily Care Companion" with subtitle "Making Every Shift Easier, One Task at a Time"
+  - Simplified hero section messaging for clearer branding
+  - Focused on the core value proposition as a daily care companion
+
 - January 14, 2025: Integrated ADL (Activities of Daily Living) Tracker System
   - Added complete database schema for patients, ADL categories, entries, and daily summaries
   - Created patient management system with care level tracking (skilled, assisted, independent)
