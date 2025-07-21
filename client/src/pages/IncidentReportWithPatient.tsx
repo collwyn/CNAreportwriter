@@ -8,10 +8,15 @@ import SimpleForm from "../components/SimpleForm";
 import { useLanguage } from "../context/LanguageContext";
 import type { Patient } from "@shared/schema";
 
-export default function IncidentReportWithPatient() {
+interface IncidentReportWithPatientProps {
+  patient?: Patient | null;
+  onBack?: () => void;
+}
+
+export default function IncidentReportWithPatient({ patient, onBack }: IncidentReportWithPatientProps) {
   const { t } = useLanguage();
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [step, setStep] = useState<'select-patient' | 'fill-report'>('select-patient');
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patient || null);
+  const [step, setStep] = useState<'select-patient' | 'fill-report'>(patient ? 'fill-report' : 'select-patient');
 
   const handlePatientSelect = (patient: Patient | null, isNew?: boolean) => {
     setSelectedPatient(patient);
@@ -30,12 +35,19 @@ export default function IncidentReportWithPatient() {
       <div className="max-w-6xl mx-auto">
         {/* Navigation */}
         <div className="mb-6">
-          <Link to="/">
-            <Button variant="outline" className="mb-4">
+          {onBack ? (
+            <Button variant="outline" className="mb-4" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t('backToHome')}
             </Button>
-          </Link>
+          ) : (
+            <Link to="/">
+              <Button variant="outline" className="mb-4">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {t('backToHome')}
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Header */}
