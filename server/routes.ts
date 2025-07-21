@@ -2,11 +2,35 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateReport, translateReport } from "./openai";
-import { insertReportSchema, translateReportSchema, insertFeedbackSchema, insertFeedbackAnalyticsSchema } from "@shared/schema";
+import { insertReportSchema, translateReportSchema, insertFeedbackSchema, insertFeedbackAnalyticsSchema, localSignupSchema, localLoginSchema } from "@shared/schema";
 import { reportRateLimit } from "./rateLimit";
 import { db } from "./db";
+import passport from "./auth";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup session store
+  const PgSession = connectPgSimple(session);
+  app.use(session({
+    store: new PgSession({
+      conString: process.env.DATABASE_URL,
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET || 'dev-secret-change-in-production',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    },
+  }));
+
+  // Initialize Passport
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   // Debug route to check server routing
   app.get("/api/debug/routes", (req, res) => {
     res.json({ 
@@ -14,6 +38,117 @@ export async function registerRoutes(app: Express): Promise<Server> {
       timestamp: new Date().toISOString(),
       env: process.env.NODE_ENV || 'development'
     });
+  });
+
+  // Auth middleware to check if user is authenticated
+  const isAuthenticated = (req: any, res: any, next: any) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ message: 'Unauthorized' });
+  };
+
+  // Authentication routes
+  app.post('/api/auth/signup', (req, res, next) => {
+    const validation = localSignupSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ 
+        message: 'Invalid input', 
+        errors: validation.error.format() 
+      });
+    }
+    
+    passport.authenticate('local-signup', (err: any, user: any, info: any) => {
+      if (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+      if (!user) {
+        return res.status(400).json({ message: info?.message || 'Registration failed' });
+      }
+      
+      req.logIn(user, (err: any) => {
+        if (err) {
+          return res.status(500).json({ message: 'Login failed after registration' });
+        }
+        return res.status(201).json({ message: 'Registration successful', user: { id: user.id, email: user.email } });
+      });
+    })(req, res, next);
+  });
+
+  app.post('/api/auth/login', (req, res, next) => {
+    const validation = localLoginSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ 
+        message: 'Invalid input', 
+        errors: validation.error.format() 
+      });
+    }
+    
+    passport.authenticate('local-login', (err: any, user: any, info: any) => {
+      if (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+      if (!user) {
+        return res.status(401).json({ message: info?.message || 'Invalid credentials' });
+      }
+      
+      req.logIn(user, (err: any) => {
+        if (err) {
+          return res.status(500).json({ message: 'Login failed' });
+        }
+        return res.json({ message: 'Login successful', user: { id: user.id, email: user.email } });
+      });
+    })(req, res, next);
+  });
+
+  app.post('/api/auth/logout', (req, res) => {
+    req.logout((err: any) => {
+      if (err) {
+        return res.status(500).json({ message: 'Logout failed' });
+      }
+      res.json({ message: 'Logout successful' });
+    });
+  });
+
+  // Google OAuth routes
+  app.get('/api/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+  );
+
+  app.get('/api/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/auth?error=google' }),
+    (req, res) => {
+      res.redirect('/');
+    }
+  );
+
+  // Facebook OAuth routes
+  app.get('/api/auth/facebook',
+    passport.authenticate('facebook', { scope: ['email'] })
+  );
+
+  app.get('/api/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/auth?error=facebook' }),
+    (req, res) => {
+      res.redirect('/');
+    }
+  );
+
+  // Get current user
+  app.get('/api/auth/user', (req, res) => {
+    if (req.isAuthenticated()) {
+      const user = req.user as any;
+      res.json({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profileImageUrl: user.profileImageUrl,
+        authProvider: user.authProvider
+      });
+    } else {
+      res.status(401).json({ message: 'Not authenticated' });
+    }
   });
 
   // Rate limit status endpoint

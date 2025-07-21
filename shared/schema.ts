@@ -4,13 +4,40 @@ import { z } from "zod";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  email: text("email").unique(),
+  username: text("username").unique(),
+  password: text("password"), // nullable for OAuth users
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
+  authProvider: text("auth_provider").notNull().default("local"), // local, google, facebook
+  providerId: text("provider_id"), // ID from OAuth provider
+  isEmailVerified: boolean("is_email_verified").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// User registration schemas
+export const localSignupSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+});
+
+export const localLoginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
+  email: true,
   username: true,
   password: true,
+  firstName: true,
+  lastName: true,
+  authProvider: true,
+  providerId: true,
 });
 
 export const reports = pgTable("reports", {

@@ -1,12 +1,20 @@
 import { users, reports, feedback, feedbackAnalytics, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback, type FeedbackAnalytics, type InsertFeedbackAnalytics } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
+  // User authentication methods
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByProvider(provider: string, providerId: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  linkProvider(userId: number, provider: string, providerId: string): Promise<void>;
+  
+  // Reports
   createReport(report: InsertReport & { generatedReport: string }): Promise<Report>;
+  
+  // Feedback
   createFeedback(feedback: InsertFeedback, ipAddress: string): Promise<Feedback>;
   getAllFeedback(): Promise<Feedback[]>;
   getFeedbackStats(): Promise<any>;
@@ -25,12 +33,38 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async getUserByProvider(provider: string, providerId: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(
+      and(eq(users.authProvider, provider), eq(users.providerId, providerId))
+    );
+    return user || undefined;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        ...insertUser,
+        updatedAt: new Date()
+      })
       .returning();
     return user;
+  }
+
+  async linkProvider(userId: number, provider: string, providerId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        authProvider: provider,
+        providerId: providerId,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
   }
 
   async createReport(reportData: InsertReport & { generatedReport: string }): Promise<Report> {
