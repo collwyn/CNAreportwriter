@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { Footer } from "@/components/Footer";
+import TopNavigation from "@/components/TopNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +51,7 @@ export default function ADLDashboard() {
   if (viewMode === 'patient-selector') {
     return (
       <div className="flex flex-col min-h-screen bg-neutral-50">
+        <TopNavigation />
         <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
           <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
             <div className="flex items-center space-x-6">
@@ -89,6 +91,7 @@ export default function ADLDashboard() {
   if (viewMode === 'quick-entry' && selectedPatient) {
     return (
       <div className="flex flex-col min-h-screen bg-neutral-50">
+        <TopNavigation />
         <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
           <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
             <div className="flex items-center space-x-6">
@@ -118,6 +121,7 @@ export default function ADLDashboard() {
 
   return (
     <div className="flex flex-col min-h-screen bg-neutral-50">
+      <TopNavigation />
       <header className="bg-white shadow-sm sticky top-0 z-10" style={{ height: '100px' }}>
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center h-full">
           <div className="flex items-center space-x-6">
