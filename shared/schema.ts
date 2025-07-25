@@ -317,3 +317,23 @@ export type HandoffReport = typeof handoffReports.$inferSelect;
 export type InsertHandoffReport = z.infer<typeof insertHandoffReportSchema>;
 export type ShiftMetrics = typeof shiftMetrics.$inferSelect;
 export type InsertShiftMetrics = z.infer<typeof insertShiftMetricsSchema>;
+
+// General Statement schema
+export const generalStatements = pgTable("general_statements", {
+  id: serial("id").primaryKey(),
+  residentName: varchar("resident_name", { length: 255 }).notNull(),
+  roomNumber: varchar("room_number", { length: 50 }),
+  rawStatement: text("raw_statement").notNull(),
+  processedStatement: text("processed_statement").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertGeneralStatementSchema = createInsertSchema(generalStatements).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertGeneralStatement = z.infer<typeof insertGeneralStatementSchema>;
+export type GeneralStatement = typeof generalStatements.$inferSelect;

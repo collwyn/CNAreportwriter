@@ -136,6 +136,17 @@ export const translations = {
     incidentReportDescription: 'Create professional incident reports with AI assistance',
     startIncidentReport: 'Start Incident Report',
     openAdlTracker: 'Open ADL Tracker',
+    
+    // Shift handoff translations
+    shiftHandoff: "Shift Handoff",
+    shiftHandoffDescription: "Professional shift transition documentation with AI-powered handoff reports for seamless care continuity.",
+    startShiftHandoff: "Start Shift Handoff",
+    
+    // General statement translations
+    generalStatementWriter: "General Statement Writer",
+    generalStatementDescription: "Create professional employee statements with AI assistance for grammar, spelling, and structure improvements.",
+    startGeneralStatement: "Create Statement",
+    
     selectPatient: 'Select Patient',
     activePatients: 'Active Patients',
     quickAdlEntry: 'Quick ADL Entry',
@@ -528,6 +539,17 @@ export const translations = {
     incidentReportDescription: 'Crear informes de incidentes profesionales con asistencia de IA',
     startIncidentReport: 'Iniciar Informe de Incidente',
     openAdlTracker: 'Abrir Seguimiento ADL',
+    
+    // Shift handoff translations - Spanish
+    shiftHandoff: "Entrega de Turno",
+    shiftHandoffDescription: "Documentación profesional de transición de turno con informes de entrega asistidos por IA para continuidad del cuidado.",
+    startShiftHandoff: "Iniciar Entrega de Turno",
+    
+    // General statement translations - Spanish
+    generalStatementWriter: "Redactor de Declaración General",
+    generalStatementDescription: "Crear declaraciones profesionales de empleados con asistencia de IA para mejorar gramática, ortografía y estructura.",
+    startGeneralStatement: "Crear Declaración",
+    
     selectPatient: 'Seleccionar Paciente',
     activePatients: 'Pacientes Activos',
     quickAdlEntry: 'Entrada Rápida ADL',

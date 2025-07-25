@@ -12,6 +12,7 @@ import AuthPage from "@/pages/AuthPage";
 import NotFound from "@/pages/not-found";
 import FeedbackDashboard from "@/pages/feedback-dashboard";
 import ShiftHandoffPage from "@/pages/ShiftHandoffPage";
+import GeneralStatementPage from "@/pages/GeneralStatementPage";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/incident-report" component={IncidentReportPage} />
       <Route path="/adl-dashboard" component={ADLDashboard} />
       <Route path="/shift-handoff" component={ShiftHandoffPage} />
+      <Route path="/general-statement" component={GeneralStatementPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/admin/feedback" component={FeedbackDashboard} />
       <Route component={NotFound} />

@@ -445,6 +445,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.use("/api/shifts", shiftsRoutes.default);
   app.use("/api/handoff", handoffRoutes.default);
+  
+  // General statement routes
+  const generalStatementRoutes = await import("./routes/general-statement");
+  app.use("/api/general-statement", generalStatementRoutes.default);
 
   const httpServer = createServer(app);
 

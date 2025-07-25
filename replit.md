@@ -1,13 +1,15 @@
 # CNA Genius - Healthcare Documentation Platform
 
 ## Overview
-CNA Genius is a comprehensive healthcare documentation platform designed for Certified Nursing Assistants (CNAs). The platform features three main tools:
+CNA Genius is a comprehensive healthcare documentation platform designed for Certified Nursing Assistants (CNAs). The platform features four main tools:
 
 1. **Incident Report Generator** - Streamlines the creation of professional incident reports with AI assistance, converting form data into grammatically correct, first-person narrative reports with multi-language support.
 
 2. **ADL Tracker** - Activities of Daily Living tracking system that allows CNAs to quickly document patient care activities, assistance levels, and generate AI-powered daily summaries for Medicare compliance.
 
 3. **Shift Handoff** - Professional shift transition documentation system enabling CNAs to track shift activities, record critical notes, and generate comprehensive AI-powered handoff reports for seamless care continuity between shifts.
+
+4. **General Statement Writer** - Simple employee statement creation tool that transforms basic incident descriptions into professional, grammatically correct statements using AI assistance, with copy/download functionality for easy documentation.
 
 ## System Architecture
 
@@ -102,6 +104,15 @@ CNA Genius is a comprehensive healthcare documentation platform designed for Cer
 - Safe deployment with rollback capabilities
 
 ## Recent Changes
+- January 22, 2025: Added General Statement Writer feature for professional employee statement creation
+  - Simple form interface collecting resident name, room number, and raw statement text
+  - AI-powered statement processing for grammar, spelling, and structure improvements
+  - Professional formatting with copy-to-clipboard and download functionality
+  - Multi-language support across all 7 supported languages
+  - Database storage for statement history and tracking
+  - Rate limiting integration to prevent abuse
+  - Added to home page navigation with orange-themed card design
+
 - January 22, 2025: Implemented comprehensive Shift Handoff feature for seamless care transition documentation
   - Added complete database schema with shifts, shift_assignments, handoff_notes, and handoff_reports tables
   - Created full-featured shift tracking system with real-time note-taking capabilities

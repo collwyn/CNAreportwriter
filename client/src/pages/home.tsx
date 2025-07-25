@@ -6,7 +6,7 @@ import TopNavigation from "@/components/TopNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
-import { FileText, Activity } from "lucide-react";
+import { FileText, Activity, ClipboardCheck, FileEdit } from "lucide-react";
 import headerLogoImage from "@assets/cnageniuslogo_1752779536382.jpg";
 
 export default function Home() {
@@ -84,6 +84,44 @@ export default function Home() {
               <Link href="/adl-dashboard">
                 <Button className="w-full bg-green-600 hover:bg-green-700">
                   {t('openAdlTracker')}
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-purple-200 bg-purple-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-3">
+                <ClipboardCheck className="w-6 h-6 text-purple-600" />
+                <span>{t('shiftHandoff')}</span>
+              </CardTitle>
+              <CardDescription>
+                {t('shiftHandoffDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/shift-handoff">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  {t('startShiftHandoff')}
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-orange-200 bg-orange-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-3">
+                <FileEdit className="w-6 h-6 text-orange-600" />
+                <span>{t('generalStatementWriter')}</span>
+              </CardTitle>
+              <CardDescription>
+                {t('generalStatementDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/general-statement">
+                <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                  {t('startGeneralStatement')}
                 </Button>
               </Link>
             </CardContent>

@@ -199,3 +199,50 @@ ${data.completedActivities?.map((activity: string) => `• ${activity}`).join('\
 ITEMS FOR NEXT SHIFT:
 ${data.itemsForNextShift?.map((item: string) => `• ${item}`).join('\n') || '• No pending items'}`;
 }
+
+// General Statement processing function
+export async function processGeneralStatement(data: {
+  residentName: string;
+  roomNumber?: string;
+  rawStatement: string;
+}): Promise<string> {
+  const prompt = `Process and improve this employee incident statement. Correct grammar, spelling, and structure while maintaining the original meaning and factual content.
+
+Resident Name: ${data.residentName}
+${data.roomNumber ? `Room: ${data.roomNumber}` : ''}
+
+Original Statement:
+"${data.rawStatement}"
+
+Please:
+1. Correct any grammar and spelling errors
+2. Improve sentence structure and flow
+3. Ensure professional healthcare terminology where appropriate
+4. Maintain all factual details exactly as provided
+5. Format as a clear, professional incident statement
+6. Keep the first-person perspective if used in the original
+
+Return only the improved statement text, properly formatted and professional.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional medical documentation specialist who helps healthcare workers create clear, accurate, and grammatically correct incident statements. Always preserve the original facts and meaning while improving clarity and professionalism."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 1000
+    });
+
+    return response.choices[0].message.content || "Unable to process statement";
+  } catch (error) {
+    console.error("Error processing general statement:", error);
+    throw new Error("Failed to process statement");
+  }
+}
