@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { FileText, Activity, ClipboardCheck, FileEdit } from "lucide-react";
-import headerLogoImage from "@assets/cnageniuslogo_1752779536382.jpg";
+import headerLogoImage from "@assets/cnageniuslogo_1753839891568.jpg";
 
 export default function Home() {
   const { t } = useLanguage();
