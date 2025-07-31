@@ -1,4 +1,4 @@
-import nurseLogoImage from "@assets/ChatGPT Image Jul 14, 2025, 04_27_08 PM_1752529567545.png";
+import nurseLogoImage from "@assets/cnageniuslogo_1753839891568.jpg";
 
 export function NurseLogo() {
   return (
