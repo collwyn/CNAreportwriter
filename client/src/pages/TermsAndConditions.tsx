@@ -110,7 +110,18 @@ export default function TermsAndConditions() {
               </section>
 
               <section>
-                <h2 className="text-xl font-semibold text-blue-800 mb-3">11. Contact Us</h2>
+                <h2 className="text-xl font-semibold text-blue-800 mb-3">11. Data Deletion Requests</h2>
+                <p>
+                  You have the right to request deletion of your personal data and account information from our platform. 
+                  To request data deletion, please contact us at <a href="mailto:collwync@gmail.com" className="text-blue-600 hover:text-blue-800 underline">collwync@gmail.com</a> with "Data Deletion Request" in the subject line. 
+                  Please include your account email address and any additional details to help us locate your data. 
+                  We will process your request within 30 days and confirm completion via email. 
+                  Note that some data may be retained for legal compliance or business purposes as permitted by applicable law.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-xl font-semibold text-blue-800 mb-3">12. Contact Us</h2>
                 <p>
                   If you have any questions about these Terms, you can contact us at: <a href="mailto:collwync@gmail.com" className="text-blue-600 hover:text-blue-800 underline">collwync@gmail.com</a>
                 </p>
