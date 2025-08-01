@@ -8,10 +8,16 @@ export function Footer() {
     <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center text-sm text-gray-500">
-          <div className="mb-2">
+          <div className="mb-2 space-x-4">
             <Link href="/terms-and-conditions">
               <span className="text-blue-600 hover:text-blue-800 underline cursor-pointer">
                 Terms and Conditions
+              </span>
+            </Link>
+            <span className="text-gray-400">•</span>
+            <Link href="/data-deletion-request">
+              <span className="text-blue-600 hover:text-blue-800 underline cursor-pointer">
+                Data Deletion Request
               </span>
             </Link>
           </div>

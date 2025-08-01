@@ -14,6 +14,7 @@ import FeedbackDashboard from "@/pages/feedback-dashboard";
 import ShiftHandoffPage from "@/pages/ShiftHandoffPage";
 import GeneralStatementPage from "@/pages/GeneralStatementPage";
 import TermsAndConditions from "@/pages/TermsAndConditions";
+import DataDeletionRequest from "@/pages/DataDeletionRequest";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/shift-handoff" component={ShiftHandoffPage} />
       <Route path="/general-statement" component={GeneralStatementPage} />
       <Route path="/terms-and-conditions" component={TermsAndConditions} />
+      <Route path="/data-deletion-request" component={DataDeletionRequest} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/admin/feedback" component={FeedbackDashboard} />
       <Route component={NotFound} />
