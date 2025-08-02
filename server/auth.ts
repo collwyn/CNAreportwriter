@@ -67,10 +67,14 @@ passport.use('local-login', new LocalStrategy({
 
 // Configure Google OAuth strategy
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  const domain = process.env.REPLIT_DOMAINS?.split(',')[0] || 'localhost:5000';
+  const protocol = domain.includes('localhost') ? 'http' : 'https';
+  const callbackURL = `${protocol}://${domain}/api/auth/google/callback`;
+  
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/api/auth/google/callback"
+    callbackURL: callbackURL
   }, async (accessToken, refreshToken, profile, done) => {
     try {
       // Check if user exists with this Google ID
@@ -111,10 +115,14 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 // Configure Facebook OAuth strategy
 if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
+  const domain = process.env.REPLIT_DOMAINS?.split(',')[0] || 'localhost:5000';
+  const protocol = domain.includes('localhost') ? 'http' : 'https';
+  const facebookCallbackURL = `${protocol}://${domain}/api/auth/facebook/callback`;
+  
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "/api/auth/facebook/callback",
+    callbackURL: facebookCallbackURL,
     profileFields: ['id', 'displayName', 'photos', 'email', 'name']
   }, async (accessToken, refreshToken, profile, done) => {
     try {
