@@ -67,12 +67,8 @@ passport.use('local-login', new LocalStrategy({
 
 // Configure Google OAuth strategy
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  // Use custom domain if available, fallback to Replit domain
-  const customDomain = 'www.cnagenius.com';
-  const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0] || 'localhost:5000';
-  const domain = customDomain || replitDomain;
-  const protocol = domain.includes('localhost') ? 'http' : 'https';
-  const callbackURL = `${protocol}://${domain}/api/auth/google/callback`;
+  // Use relative callback URL for flexibility
+  const callbackURL = "/api/auth/google/callback";
   
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -118,12 +114,8 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 // Configure Facebook OAuth strategy
 if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
-  // Use custom domain if available, fallback to Replit domain
-  const customDomain = 'www.cnagenius.com';
-  const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0] || 'localhost:5000';
-  const domain = customDomain || replitDomain;
-  const protocol = domain.includes('localhost') ? 'http' : 'https';
-  const facebookCallbackURL = `${protocol}://${domain}/api/auth/facebook/callback`;
+  // Use relative callback URL for flexibility
+  const facebookCallbackURL = "/api/auth/facebook/callback";
   
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,

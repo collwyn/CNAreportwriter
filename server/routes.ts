@@ -35,20 +35,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/debug/routes", (req, res) => {
     const customDomain = 'www.cnagenius.com';
     const replitDomain = process.env.REPLIT_DOMAINS?.split(',')[0] || 'localhost:5000';
-    const domain = customDomain || replitDomain;
-    const protocol = domain.includes('localhost') ? 'http' : 'https';
-    const googleCallbackURL = `${protocol}://${domain}/api/auth/google/callback`;
-    const facebookCallbackURL = `${protocol}://${domain}/api/auth/facebook/callback`;
+    
+    const googleCallbacks = [
+      `https://${customDomain}/api/auth/google/callback`,
+      `https://${replitDomain}/api/auth/google/callback`
+    ];
+    const facebookCallbacks = [
+      `https://${customDomain}/api/auth/facebook/callback`,
+      `https://${replitDomain}/api/auth/facebook/callback`
+    ];
     
     res.json({ 
       message: "Server routes working", 
       timestamp: new Date().toISOString(),
       env: process.env.NODE_ENV || 'development',
-      domain: domain,
+      current_host: req.get('host'),
       oauth_callbacks: {
-        google: googleCallbackURL,
-        facebook: facebookCallbackURL
+        google: googleCallbacks,
+        facebook: facebookCallbacks
       },
+      instructions: "Add ALL callback URLs listed above to your OAuth provider settings",
       credentials_status: {
         google_client_id: !!process.env.GOOGLE_CLIENT_ID,
         google_client_secret: !!process.env.GOOGLE_CLIENT_SECRET,
