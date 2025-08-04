@@ -1,4 +1,4 @@
-import { users, reports, feedback, feedbackAnalytics, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback, type FeedbackAnalytics, type InsertFeedbackAnalytics } from "@shared/schema";
+import { users, reports, feedback, feedbackAnalytics, suggestions, type User, type InsertUser, type Report, type InsertReport, type Feedback, type InsertFeedback, type FeedbackAnalytics, type InsertFeedbackAnalytics, type Suggestion, type InsertSuggestion } from "@shared/schema";
 import { db } from "./db";
 import { eq, and } from "drizzle-orm";
 
@@ -20,6 +20,13 @@ export interface IStorage {
   getFeedbackStats(): Promise<any>;
   trackFeedbackAnalytics(analytics: InsertFeedbackAnalytics): Promise<FeedbackAnalytics>;
   getFeedbackAnalytics(): Promise<any>;
+  
+  // Suggestions
+  createSuggestion(suggestion: InsertSuggestion, ipAddress: string, userAgent: string): Promise<Suggestion>;
+  getAllSuggestions(): Promise<Suggestion[]>;
+  getSuggestionsByStatus(status: string): Promise<Suggestion[]>;
+  updateSuggestionStatus(id: number, status: string, adminResponse?: string): Promise<void>;
+  voteSuggestion(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -190,6 +197,58 @@ export class DatabaseStorage implements IStorage {
       recentSubmissions,
       recentConversionRate: Math.round(recentConversionRate * 10) / 10
     };
+  }
+
+  // Suggestions methods
+  async createSuggestion(suggestionData: InsertSuggestion, ipAddress: string, userAgent: string): Promise<Suggestion> {
+    const [suggestion] = await db
+      .insert(suggestions)
+      .values({
+        ...suggestionData,
+        ipAddress,
+        userAgent,
+      })
+      .returning();
+    
+    return suggestion;
+  }
+
+  async getAllSuggestions(): Promise<Suggestion[]> {
+    return await db.select().from(suggestions).orderBy(suggestions.createdAt);
+  }
+
+  async getSuggestionsByStatus(status: string): Promise<Suggestion[]> {
+    return await db.select().from(suggestions).where(eq(suggestions.status, status)).orderBy(suggestions.createdAt);
+  }
+
+  async updateSuggestionStatus(id: number, status: string, adminResponse?: string): Promise<void> {
+    const updateData: any = {
+      status,
+      updatedAt: new Date(),
+    };
+    
+    if (adminResponse) {
+      updateData.adminResponse = adminResponse;
+      updateData.respondedAt = new Date();
+    }
+    
+    await db
+      .update(suggestions)
+      .set(updateData)
+      .where(eq(suggestions.id, id));
+  }
+
+  async voteSuggestion(id: number): Promise<void> {
+    const [suggestion] = await db.select().from(suggestions).where(eq(suggestions.id, id));
+    if (suggestion) {
+      await db
+        .update(suggestions)
+        .set({
+          userVotes: suggestion.userVotes + 1,
+          updatedAt: new Date(),
+        })
+        .where(eq(suggestions.id, id));
+    }
   }
 }
 

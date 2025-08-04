@@ -2,7 +2,7 @@ import { Link, useLocation } from 'wouter';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Activity, LogIn, LogOut, User, ClipboardCheck } from 'lucide-react';
+import { Home, FileText, Activity, LogIn, LogOut, User, ClipboardCheck, Lightbulb } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -108,6 +108,16 @@ export default function TopNavigation() {
               >
                 <ClipboardCheck className="w-4 h-4" />
                 <span className="hidden md:inline">{t('shiftHandoff')}</span>
+              </Button>
+            </Link>
+            <Link href="/suggestions">
+              <Button 
+                variant={isActive('/suggestions') ? 'default' : 'ghost'} 
+                size="sm"
+                className="flex items-center space-x-2"
+              >
+                <Lightbulb className="w-4 h-4" />
+                <span className="hidden md:inline">{t('suggestionCenter')}</span>
               </Button>
             </Link>
           </div>

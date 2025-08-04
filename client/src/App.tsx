@@ -15,6 +15,7 @@ import ShiftHandoffPage from "@/pages/ShiftHandoffPage";
 import GeneralStatementPage from "@/pages/GeneralStatementPage";
 import TermsAndConditions from "@/pages/TermsAndConditions";
 import DataDeletionRequest from "@/pages/DataDeletionRequest";
+import Suggestions from "@/pages/Suggestions";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/adl-dashboard" component={ADLDashboard} />
       <Route path="/shift-handoff" component={ShiftHandoffPage} />
       <Route path="/general-statement" component={GeneralStatementPage} />
+      <Route path="/suggestions" component={Suggestions} />
       <Route path="/terms-and-conditions" component={TermsAndConditions} />
       <Route path="/data-deletion-request" component={DataDeletionRequest} />
       <Route path="/auth" component={AuthPage} />

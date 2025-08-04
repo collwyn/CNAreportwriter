@@ -337,3 +337,42 @@ export const insertGeneralStatementSchema = createInsertSchema(generalStatements
 
 export type InsertGeneralStatement = z.infer<typeof insertGeneralStatementSchema>;
 export type GeneralStatement = typeof generalStatements.$inferSelect;
+
+// User Suggestions Schema - NEW FEATURE
+export const suggestions = pgTable("suggestions", {
+  id: serial("id").primaryKey(),
+  userName: varchar("user_name", { length: 255 }),
+  email: varchar("email", { length: 255 }),
+  suggestionType: varchar("suggestion_type", { length: 50 }).notNull(), // feature_improvement, new_feature, bug_report, other
+  featureArea: varchar("feature_area", { length: 100 }), // incident_reports, adl_tracker, shift_handoff, general_statements, general
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  priority: varchar("priority", { length: 20 }).default("medium").notNull(), // low, medium, high, urgent
+  status: varchar("status", { length: 30 }).default("submitted").notNull(), // submitted, under_review, in_progress, completed, declined
+  implementationNotes: text("implementation_notes"), // admin notes about implementation
+  estimatedEffort: varchar("estimated_effort", { length: 50 }), // small, medium, large, very_large
+  userVotes: integer("user_votes").default(0),
+  adminResponse: text("admin_response"),
+  respondedAt: timestamp("responded_at"),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertSuggestionSchema = createInsertSchema(suggestions).omit({
+  id: true,
+  status: true,
+  implementationNotes: true,
+  estimatedEffort: true,
+  userVotes: true,
+  adminResponse: true,
+  respondedAt: true,
+  ipAddress: true,
+  userAgent: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type Suggestion = typeof suggestions.$inferSelect;
+export type InsertSuggestion = z.infer<typeof insertSuggestionSchema>;

@@ -474,6 +474,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const generalStatementRoutes = await import("./routes/general-statement");
   app.use("/api/general-statement", generalStatementRoutes.default);
 
+  // Suggestions API routes
+  app.post("/api/suggestions", async (req, res) => {
+    try {
+      const { insertSuggestionSchema } = await import("@shared/schema");
+      const validationResult = insertSuggestionSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          message: "Invalid suggestion data", 
+          errors: validationResult.error.format() 
+        });
+      }
+      
+      const ipAddress = req.ip || req.connection.remoteAddress || 'unknown';
+      const userAgent = req.get('User-Agent') || 'unknown';
+      
+      const suggestion = await storage.createSuggestion(validationResult.data, ipAddress, userAgent);
+      res.status(201).json(suggestion);
+    } catch (error) {
+      console.error("Error creating suggestion:", error);
+      res.status(500).json({ message: "Error creating suggestion" });
+    }
+  });
+
+  app.get("/api/suggestions", async (req, res) => {
+    try {
+      const { status } = req.query;
+      let suggestions;
+      
+      if (status && typeof status === 'string') {
+        suggestions = await storage.getSuggestionsByStatus(status);
+      } else {
+        suggestions = await storage.getAllSuggestions();
+      }
+      
+      res.json(suggestions);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      res.status(500).json({ message: "Error fetching suggestions" });
+    }
+  });
+
+  app.post("/api/suggestions/:id/vote", async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.voteSuggestion(parseInt(id));
+      res.json({ message: "Vote recorded successfully" });
+    } catch (error) {
+      console.error("Error voting on suggestion:", error);
+      res.status(500).json({ message: "Error voting on suggestion" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

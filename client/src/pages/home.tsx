@@ -6,7 +6,7 @@ import TopNavigation from "@/components/TopNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
-import { FileText, Activity, ClipboardCheck, FileEdit } from "lucide-react";
+import { FileText, Activity, ClipboardCheck, FileEdit, Lightbulb } from "lucide-react";
 import headerLogoImage from "@assets/cnageniuslogo_1753839891568.jpg";
 
 export default function Home() {
@@ -50,7 +50,7 @@ export default function Home() {
         </div>
         
         {/* Navigation Cards - Choose Your Tool */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer border-blue-200 bg-blue-50">
             <CardHeader>
               <CardTitle className="flex items-center space-x-3">
@@ -122,6 +122,25 @@ export default function Home() {
               <Link href="/general-statement">
                 <Button className="w-full bg-orange-600 hover:bg-orange-700">
                   {t('startGeneralStatement')}
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer border-yellow-200 bg-yellow-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-3">
+                <Lightbulb className="w-6 h-6 text-yellow-600" />
+                <span>{t('suggestionCenter')}</span>
+              </CardTitle>
+              <CardDescription>
+                {t('suggestionCenterDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/suggestions">
+                <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
+                  {t('submitSuggestion')}
                 </Button>
               </Link>
             </CardContent>
