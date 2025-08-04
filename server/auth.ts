@@ -14,16 +14,16 @@ passport.use('local-signup', new LocalStrategy({
 }, async (req, email, password, done) => {
   try {
     const { firstName, lastName } = req.body;
-    
+
     // Check if user already exists
     const existingUser = await storage.getUserByEmail(email);
     if (existingUser) {
       return done(null, false, { message: 'Email already registered' });
     }
-    
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
-    
+
     // Create user
     const newUser = await storage.createUser({
       email,
@@ -33,7 +33,7 @@ passport.use('local-signup', new LocalStrategy({
       authProvider: 'local',
       isEmailVerified: false
     });
-    
+
     return done(null, newUser);
   } catch (error) {
     return done(error);
@@ -49,16 +49,16 @@ passport.use('local-login', new LocalStrategy({
     if (!user) {
       return done(null, false, { message: 'Invalid email or password' });
     }
-    
+
     if (user.authProvider !== 'local' || !user.password) {
       return done(null, false, { message: 'Please sign in with your social account' });
     }
-    
+
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return done(null, false, { message: 'Invalid email or password' });
     }
-    
+
     return done(null, user);
   } catch (error) {
     return done(error);
@@ -67,9 +67,12 @@ passport.use('local-login', new LocalStrategy({
 
 // Configure Google OAuth strategy
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  // Use relative callback URL for flexibility
-  const callbackURL = "/api/auth/google/callback";
-  
+  // Use dynamic callback URL based on environment
+  const baseURL = process.env.NODE_ENV === 'production'
+    ? 'https://www.cnagenius.com'
+    : `https://${process.env.REPLIT_DEV_DOMAIN || 'localhost:5000'}`;
+  const callbackURL = `${baseURL}/api/auth/google/callback`;
+
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -78,11 +81,11 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     try {
       // Check if user exists with this Google ID
       let user = await storage.getUserByProvider('google', profile.id);
-      
+
       if (user) {
         return done(null, user);
       }
-      
+
       // Check if user exists with same email
       const email = profile.emails?.[0]?.value;
       if (email) {
@@ -93,7 +96,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
           return done(null, user);
         }
       }
-      
+
       // Create new user
       const newUser = await storage.createUser({
         email: email || null,
@@ -104,7 +107,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
         providerId: profile.id,
         isEmailVerified: true
       });
-      
+
       return done(null, newUser);
     } catch (error) {
       return done(error);
@@ -114,9 +117,12 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 
 // Configure Facebook OAuth strategy
 if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
-  // Use relative callback URL for flexibility
-  const facebookCallbackURL = "/api/auth/facebook/callback";
-  
+  // Use dynamic callback URL based on environment
+  const baseURL = process.env.NODE_ENV === 'production'
+    ? 'https://www.cnagenius.com'
+    : `https://${process.env.REPLIT_DEV_DOMAIN || 'localhost:5000'}`;
+  const facebookCallbackURL = `${baseURL}/api/auth/facebook/callback`;
+
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -126,11 +132,11 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
     try {
       // Check if user exists with this Facebook ID
       let user = await storage.getUserByProvider('facebook', profile.id);
-      
+
       if (user) {
         return done(null, user);
       }
-      
+
       // Check if user exists with same email
       const email = profile.emails?.[0]?.value;
       if (email) {
@@ -141,7 +147,7 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
           return done(null, user);
         }
       }
-      
+
       // Create new user
       const newUser = await storage.createUser({
         email: email || null,
@@ -152,7 +158,7 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
         providerId: profile.id,
         isEmailVerified: true
       });
-      
+
       return done(null, newUser);
     } catch (error) {
       return done(error);
