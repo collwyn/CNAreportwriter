@@ -36,8 +36,10 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
   firstName: true,
   lastName: true,
+  profileImageUrl: true,
   authProvider: true,
   providerId: true,
+  isEmailVerified: true,
 });
 
 export const reports = pgTable("reports", {
@@ -119,13 +121,7 @@ export const insertFeedbackAnalyticsSchema = createInsertSchema(feedbackAnalytic
   timestamp: true,
 });
 
-// Types for the above tables
-export type User = typeof users.$inferSelect;
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type Report = typeof reports.$inferSelect;
-export type InsertReport = z.infer<typeof insertReportSchema>;
-export type Feedback = typeof feedback.$inferSelect;
-export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
+// Types for the above tables (consolidated at end of file)
 
 // ADL System Tables
 export const patients = pgTable("patients", {

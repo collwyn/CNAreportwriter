@@ -70,7 +70,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   // Use dynamic callback URL based on environment
   const baseURL = process.env.NODE_ENV === 'production'
     ? 'https://www.cnagenius.com'
-    : `https://${process.env.REPLIT_DEV_DOMAIN || 'localhost:5000'}`;
+    : 'https://ac547590-cd40-463e-b7f3-2d9d7f15cae5-00-1wm5plrr30dx.spock.replit.dev';
   const callbackURL = `${baseURL}/api/auth/google/callback`;
 
   passport.use(new GoogleStrategy({
@@ -120,7 +120,7 @@ if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
   // Use dynamic callback URL based on environment
   const baseURL = process.env.NODE_ENV === 'production'
     ? 'https://www.cnagenius.com'
-    : `https://${process.env.REPLIT_DEV_DOMAIN || 'localhost:5000'}`;
+    : 'https://ac547590-cd40-463e-b7f3-2d9d7f15cae5-00-1wm5plrr30dx.spock.replit.dev';
   const facebookCallbackURL = `${baseURL}/api/auth/facebook/callback`;
 
   passport.use(new FacebookStrategy({
