@@ -420,7 +420,7 @@ export const translations = {
     
     // Suggestions system translations
     suggestionCenter: 'Suggestion Center',
-    suggestionCenterDescription: 'Share your feedback on existing features or request new functionality',
+    suggestionCenterDescription: 'We are always searching for ways to improve our system and make your job easier! Suggest changes or new features here!',
     filterSuggestions: 'Filter Suggestions',
     allSuggestions: 'All Suggestions',
     submitted: 'Submitted',
@@ -1440,7 +1440,7 @@ export const translations = {
     
     // Suggestions system translations
     suggestionCenter: '제안 센터',
-    suggestionCenterDescription: '기존 기능에 대한 피드백을 제공하거나 새로운 기능을 요청하세요',
+    suggestionCenterDescription: '우리는 항상 시스템을 개선하고 여러분의 업무를 더 쉽게 만들 방법을 찾고 있습니다! 변경사항이나 새로운 기능을 여기서 제안해 주세요!',
     filterSuggestions: '제안 필터링',
     allSuggestions: '모든 제안',
     submitted: '제출됨',
